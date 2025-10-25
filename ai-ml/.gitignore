@@ -1,0 +1,38 @@
+# Model artifacts and checkpoints
+artifacts/
+checkpoints/
+*.pkl
+*.joblib
+*.h5
+*.pb
+*.onnx
+
+# Data files
+data/
+datasets/
+*.csv
+*.json
+*.parquet
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+.env
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+.tmp/

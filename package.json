@@ -1,0 +1,40 @@
+{
+  "name": "ai-hiring-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-Powered Hiring System - backend + frontend + ai-ml",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "backend:start": "node backend/server.js",
+    "backend:dev": "nodemon backend/server.js",
+    "lint": "eslint backend --ext .js --max-warnings=0",
+    "test": "jest --runInBand"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.33.2",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.1.4",
+    "nodemon": "^3.1.7",
+    "supertest": "^7.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/backend/tests/**/*.test.js"
+    ]
+  }
+}
