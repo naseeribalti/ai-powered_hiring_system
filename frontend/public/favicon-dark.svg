@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Main briefcase body (lighter for dark backgrounds) -->
+  <rect x="10" y="22" width="44" height="30" rx="4" fill="#818CF8" stroke="#A5B4FC" stroke-width="1"/>
+  
+  <!-- Briefcase handle with AI nodes -->
+  <path d="M22 22c0-4 3-7 7-7h6c4 0 7 3 7 7" stroke="#A5B4FC" stroke-width="3" stroke-linecap="round" fill="none"/>
+  
+  <!-- AI Neural Network Nodes -->
+  <circle cx="22" cy="12" r="3" fill="#C7D2FE"/>
+  <circle cx="32" cy="8" r="3" fill="#E0E7FF"/>
+  <circle cx="42" cy="12" r="3" fill="#C7D2FE"/>
+  
+  <!-- Neural connections -->
+  <path d="M25 13 L29 9 M35 9 L39 13" stroke="#E0E7FF" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Briefcase lock/accent -->
+  <rect x="30" y="32" width="4" height="8" rx="2" fill="#A5B4FC"/>
+  <circle cx="32" cy="28" r="2" fill="none" stroke="#A5B4FC" stroke-width="2"/>
+</svg>

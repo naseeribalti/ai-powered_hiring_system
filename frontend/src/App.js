@@ -27,6 +27,7 @@ import LoadingSpinner from './components/common/LoadingSpinner';
 import ProtectedRoute from './components/routing/ProtectedRoute';
 import AIChatbot from './components/AIChatbot';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import FaviconManager from './components/common/FaviconManager';
 
 // Import styles
 import './styles/App.css';
@@ -63,6 +64,7 @@ function AppContent() {
 
     return (
         <div className="App">
+            <FaviconManager />
             {user && <Navbar />}
             <main className={user ? 'main-content' : 'main-content-full'}>
                 <ErrorBoundary>
