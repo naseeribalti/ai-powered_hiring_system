@@ -16,152 +16,56 @@ const Navbar = () => {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+        <header className="app-header">
             <div className="container">
-                <Link className="navbar-brand fw-bold" to={user ? "/dashboard" : "/"}>
-                    <i className="fas fa-robot me-2"></i>
-                    AI Hiring System
-                </Link>
+                <nav className="nav-main">
+                    <Link className="logo" to={user ? '/dashboard' : '/'}>
+                        <i className="fas fa-robot"></i>
+                        <span>AI Hiring</span>
+                    </Link>
 
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav me-auto">
+                    <div className="nav-links">
                         {user ? (
                             <>
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`}
-                                        to="/dashboard"
-                                    >
-                                        <i className="fas fa-tachometer-alt me-1"></i>
-                                        Dashboard
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/jobs') ? 'active' : ''}`}
-                                        to="/jobs"
-                                    >
-                                        <i className="fas fa-briefcase me-1"></i>
-                                        Jobs
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/applications') ? 'active' : ''}`}
-                                        to="/applications"
-                                    >
-                                        <i className="fas fa-file-alt me-1"></i>
-                                        Applications
-                                    </Link>
-                                </li>
+                                <Link className={isActive('/dashboard') ? 'active' : ''} to="/dashboard">Dashboard</Link>
+                                <Link className={isActive('/jobs') ? 'active' : ''} to="/jobs">Jobs</Link>
+                                <Link className={isActive('/applications') ? 'active' : ''} to="/applications">Applications</Link>
                             </>
                         ) : (
                             <>
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/') ? 'active' : ''}`}
-                                        to="/"
-                                    >
-                                        Home
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/home-pro') ? 'active' : ''}`}
-                                        to="/home-pro"
-                                    >
-                                        Enhanced Home
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/jobs') ? 'active' : ''}`}
-                                        to="/jobs"
-                                    >
-                                        Jobs
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/about') ? 'active' : ''}`}
-                                        to="/about"
-                                    >
-                                        About
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/contact') ? 'active' : ''}`}
-                                        to="/contact"
-                                    >
-                                        Contact
-                                    </Link>
-                                </li>
+                                <Link className={isActive('/') ? 'active' : ''} to="/">Home</Link>
+                                <Link className={isActive('/home-pro') ? 'active' : ''} to="/home-pro">Enhanced Home</Link>
+                                <Link className={isActive('/jobs') ? 'active' : ''} to="/jobs">Jobs</Link>
+                                <Link className={isActive('/about') ? 'active' : ''} to="/about">About</Link>
+                                <Link className={isActive('/contact') ? 'active' : ''} to="/contact">Contact</Link>
                             </>
                         )}
-                    </ul>
+                    </div>
 
-                    <ul className="navbar-nav align-items-center" style={{ gap: '0.5rem' }}>
-                        <li className="nav-item d-flex align-items-center">
-                            <ThemeToggle />
-                        </li>
+                    <div className="nav-actions">
+                        <ThemeToggle />
                         {user ? (
-                            <li className="nav-item dropdown">
-                                <button
-                                    className="nav-link dropdown-toggle"
-                                    id="userMenuButton"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                    style={{ background: 'transparent' }}
-                                >
-                                    <i className="fas fa-user-circle me-1"></i>
-                                    {user?.name}
+                            <div className="user-menu">
+                                <button className="user-btn" aria-haspopup="true" aria-expanded="false">
+                                    <i className="fas fa-user-circle"></i>
+                                    <span className="user-name">{user?.name || 'Account'}</span>
                                 </button>
-                                <ul className="dropdown-menu" aria-labelledby="userMenuButton">
-                                    <li>
-                                        <Link className="dropdown-item" to="/profile">
-                                            <i className="fas fa-user me-2"></i>
-                                            Profile
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/terms">
-                                            <i className="fas fa-file-contract me-2"></i>
-                                            Terms
-                                        </Link>
-                                    </li>
-                                    <li><hr className="dropdown-divider" /></li>
-                                    <li>
-                                        <button className="dropdown-item" onClick={handleLogout}>
-                                            <i className="fas fa-sign-out-alt me-2"></i>
-                                            Logout
-                                        </button>
-                                    </li>
-                                </ul>
-                            </li>
+                                <div className="user-menu-list">
+                                    <Link to="/profile"><i className="fas fa-user"></i> Profile</Link>
+                                    <Link to="/terms"><i className="fas fa-file-contract"></i> Terms</Link>
+                                    <button onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> Logout</button>
+                                </div>
+                            </div>
                         ) : (
-                            <>
-                                <li className="nav-item">
-                                    <Link className="btn btn-outline-light me-2" to="/login">Login</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="btn btn-light" to="/register">Sign Up</Link>
-                                </li>
-                            </>
+                            <div className="auth-buttons">
+                                <Link className="nav-btn nav-btn-outline" to="/login">Login</Link>
+                                <Link className="nav-btn nav-btn-primary" to="/register">Sign Up</Link>
+                            </div>
                         )}
-                    </ul>
-                </div>
+                    </div>
+                </nav>
             </div>
-        </nav>
+        </header>
     );
 };
 
