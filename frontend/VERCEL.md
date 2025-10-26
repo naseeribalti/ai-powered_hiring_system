@@ -5,6 +5,7 @@ This project uses Create React App. The repository root includes `vercel.json` t
 ## Build & output
 
 **Important**: Vercel Project Settings should have:
+
 - **Root Directory**: `frontend` (monorepo mode)
 - **Framework Preset**: Create React App
 - **Build Command**: `npm run build` (or empty; CRA default)
