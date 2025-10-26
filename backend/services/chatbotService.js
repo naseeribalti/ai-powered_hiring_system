@@ -93,9 +93,21 @@ class ChatbotService {
 
         const normalizedQuery = query.toLowerCase();
 
-        // Detect salary preferences
+        // Apply explicit filters if provided
+        if (filters.salaryMin || filters.salaryMax) {
+            suggestions.salaryRange = {
+                min: filters.salaryMin || 0,
+                max: filters.salaryMax || 999999
+            };
+        }
+
+        if (filters.experienceLevel) {
+            suggestions.experienceLevel = filters.experienceLevel;
+        }
+
+        // Detect salary preferences from query
         if (normalizedQuery.includes('best salary') || normalizedQuery.includes('highest pay')) {
-            suggestions.salaryRange = { min: 100000, max: 250000 };
+            suggestions.salaryRange = suggestions.salaryRange || { min: 100000, max: 250000 };
             suggestions.categories.push('High-Paying Positions');
             suggestions.recommendations.push({
                 title: 'Software Architect',
@@ -158,8 +170,17 @@ class ChatbotService {
                 message: intentMatch.response,
                 confidence: intentMatch.confidence,
                 intent: intentMatch.intent.tag,
-                suggestions: []
+                suggestions: [],
+                context: {
+                    userId: context.userId,
+                    role: context.role
+                }
             };
+
+            // Personalize response based on user context
+            if (context.role === 'jobSeeker' && context.conversationHistory) {
+                response.context.previousQueries = context.conversationHistory.length;
+            }
 
             // Add contextual job suggestions if relevant
             if (['best_salary_jobs', 'good_salary_jobs', 'training_jobs', 'remote_jobs',
