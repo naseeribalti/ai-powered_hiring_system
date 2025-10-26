@@ -15,43 +15,38 @@ const adminAnalyticsService = require('../services/adminAnalyticsService');
  */
 exports.getPlatformStats = async (req, res, next) => {
     try {
-        // Count users by role
-        const totalRecruiters = await User.countDocuments({ role: 'recruiter' });
-        const totalJobSeekers = await User.countDocuments({ role: 'jobSeeker' });
-        const pendingRecruiters = await User.countDocuments({
-            role: 'recruiter',
-            status: 'pending_approval'
-        });
-        const activeRecruiters = await User.countDocuments({
-            role: 'recruiter',
-            status: 'active'
-        });
-
-        // Job statistics
-        const totalJobs = await Job.countDocuments();
-        const activeJobs = await Job.countDocuments({ status: 'active' });
-        const closedJobs = await Job.countDocuments({ status: 'closed' });
-
-        // Application statistics
-        const totalApplications = await Application.countDocuments();
-        const pendingApplications = await Application.countDocuments({
-            status: 'pending'
-        });
-        const acceptedApplications = await Application.countDocuments({
-            status: 'accepted'
-        });
-
-        // Recent registrations (last 7 days)
+        // Calculate date for recent registrations (last 7 days)
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-        const newUsersLastWeek = await User.countDocuments({
-            createdAt: { $gte: sevenDaysAgo }
-        });
-
-        const newJobsLastWeek = await Job.countDocuments({
-            createdAt: { $gte: sevenDaysAgo }
-        });
+        // Run all independent database queries in parallel using Promise.all
+        const [
+            totalRecruiters,
+            totalJobSeekers,
+            pendingRecruiters,
+            activeRecruiters,
+            totalJobs,
+            activeJobs,
+            closedJobs,
+            totalApplications,
+            pendingApplications,
+            acceptedApplications,
+            newUsersLastWeek,
+            newJobsLastWeek
+        ] = await Promise.all([
+            User.countDocuments({ role: 'recruiter' }),
+            User.countDocuments({ role: 'jobSeeker' }),
+            User.countDocuments({ role: 'recruiter', status: 'pending_approval' }),
+            User.countDocuments({ role: 'recruiter', status: 'active' }),
+            Job.countDocuments(),
+            Job.countDocuments({ status: 'active' }),
+            Job.countDocuments({ status: 'closed' }),
+            Application.countDocuments(),
+            Application.countDocuments({ status: 'pending' }),
+            Application.countDocuments({ status: 'accepted' }),
+            User.countDocuments({ createdAt: { $gte: sevenDaysAgo } }),
+            Job.countDocuments({ createdAt: { $gte: sevenDaysAgo } })
+        ]);
 
         res.status(200).json({
             status: 'success',

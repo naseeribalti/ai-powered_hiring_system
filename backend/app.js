@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const authRoutes = require('./routes/auth');
 const jobRoutes = require('./routes/jobs');
@@ -49,6 +51,18 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization']
 };
 
+// Security middleware
+app.use(helmet());
+
+// Rate limiting for auth routes (prevent brute-force attacks)
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10, // Limit each IP to 10 requests per windowMs
+    message: 'Too many authentication attempts, please try again later.',
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 app.use(cors(corsOptions));
 // Ensure preflight requests are handled
 app.options('*', cors(corsOptions));
@@ -62,7 +76,7 @@ app.get('/health', (req, res) => {
 });
 
 // API routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes); // Apply rate limiting to auth routes
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/admin', adminRoutes);

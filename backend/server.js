@@ -46,11 +46,17 @@ const startServer = async () => {
         process.on('uncaughtException', (error) => {
             // eslint-disable-next-line no-console
             console.error('❌ Uncaught Exception:', error);
+            // eslint-disable-next-line no-console
+            console.error('Process is in an undefined state. Exiting...');
+            process.exit(1); // Exit to prevent undefined application state
         });
 
         process.on('unhandledRejection', (reason, promise) => {
             // eslint-disable-next-line no-console
             console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+            // eslint-disable-next-line no-console
+            console.error('Process may be in an unstable state. Exiting...');
+            process.exit(1); // Exit for safety
         });
 
     } catch (error) {

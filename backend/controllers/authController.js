@@ -58,8 +58,8 @@ const register = async (req, res, next) => {
             userData.companyName = companyName;
             userData.companyWebsite = companyWebsite;
             userData.companyDetails = companyDetails;
-            // Recruiters start as active (or could be 'pending_approval' if you want admin approval)
-            userData.status = 'active';
+            // Recruiters require admin approval before they can post jobs
+            userData.status = 'pending_approval';
         }
 
         const user = await User.create(userData);
@@ -70,7 +70,7 @@ const register = async (req, res, next) => {
             token,
             user: user.toJSON(),
             message: role === 'recruiter'
-                ? 'Recruiter account created successfully'
+                ? 'Recruiter account created. Awaiting admin approval to post jobs.'
                 : 'Account created successfully'
         });
     } catch (error) {
