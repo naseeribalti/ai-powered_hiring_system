@@ -57,3 +57,6 @@ env/
 *~
 .swp
 
+# Keep root lockfile tracked for reproducible CI installs
+!/package-lock.json
+
