@@ -1,8 +1,8 @@
 {
   "version": 2,
   "name": "ai-hiring-frontend",
-  "buildCommand": "npm run build --prefix frontend",
-  "outputDirectory": "frontend/build",
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
   "framework": "create-react-app",
   "env": {
     "REACT_APP_API_URL": "${BACKEND_URL}/api"
@@ -21,6 +21,5 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false,
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD frontend/ || exit 1"
+  "trailingSlash": false
 }
