@@ -9,13 +9,12 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f8f9fa;
-  color: #333;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
@@ -27,10 +26,12 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-  background-color: #f5f5f5;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 0.9em;
+  border: 1px solid var(--color-border);
 }
 
 /* Scrollbar styling */
@@ -40,56 +41,58 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--color-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--color-muted);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--color-text);
 }
 
 /* Selection color */
 ::selection {
-  background-color: #007bff;
+  background-color: var(--color-primary);
   color: white;
 }
 
 ::-moz-selection {
-  background-color: #007bff;
+  background-color: var(--color-primary);
   color: white;
 }
 
 /* Focus outline for accessibility */
 :focus {
-  outline: 2px solid #007bff;
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 button:focus,
 a:focus,
 input:focus {
-  outline: 2px solid #007bff;
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 /* Reset default browser styles */
 * {
   box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 /* Link styles */
 a {
-  color: #007bff;
+  color: var(--color-primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 a:hover {
-  color: #0056b3;
+  color: var(--color-primary-hover);
   text-decoration: underline;
 }
 
@@ -202,9 +205,11 @@ h6 {
   text-decoration: none;
   padding: 8px 12px;
   border-radius: 8px;
+  transition: all 0.3s ease;
 }
 .nav-links a:hover {
   background: var(--color-bg);
+  text-decoration: none;
 }
 .nav-links a.active {
   background: var(--color-primary);
@@ -235,6 +240,7 @@ h6 {
   justify-content: center;
   border-radius: 50%;
   color: var(--color-text);
+  transition: all 0.3s ease;
 }
 .nav-theme-toggle .theme-btn.active {
   background: var(--color-primary);
@@ -251,6 +257,7 @@ h6 {
   border-radius: 8px;
   font-weight: 700;
   text-decoration: none;
+  transition: all 0.3s ease;
 }
 .nav-btn-primary {
   background: var(--color-primary);
@@ -259,6 +266,7 @@ h6 {
 .nav-btn-primary:hover {
   background: var(--color-primary-hover);
   color: #fff;
+  text-decoration: none;
 }
 .nav-btn-outline {
   background: transparent;
@@ -268,6 +276,7 @@ h6 {
 .nav-btn-outline:hover {
   background: var(--color-primary);
   color: #fff;
+  text-decoration: none;
 }
 
 /* Simple user menu (no JS dependency) */
@@ -281,6 +290,7 @@ h6 {
   padding: 8px 12px;
   border-radius: 8px;
   color: var(--color-text);
+  transition: all 0.3s ease;
 }
 .user-btn:hover {
   background: var(--color-bg);
@@ -310,10 +320,12 @@ h6 {
   border-radius: 8px;
   color: var(--color-text);
   text-align: left;
+  transition: all 0.3s ease;
 }
 .user-menu-list a:hover,
 .user-menu-list button:hover {
   background: var(--color-bg);
+  text-decoration: none;
 }
 
 /* Responsive: hide center links on smaller screens as in your design */

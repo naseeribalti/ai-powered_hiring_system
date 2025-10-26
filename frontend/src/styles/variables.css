@@ -1,19 +1,20 @@
 :root {
   /* Brand colors */
-  --color-primary: #2563eb; /* indigo-600 */
-  --color-primary-hover: #1d4ed8; /* indigo-700 */
-  --color-secondary: #0ea5e9; /* sky-500 */
-  --color-success: #16a34a; /* green-600 */
+  --color-primary: #4f46e5; /* indigo-600 matching HTML */
+  --color-primary-hover: #4338ca; /* indigo-700 */
+  --color-secondary: #f3f4f6; /* gray-100 for bg */
+  --color-success: #10b981; /* green-600 */
   --color-warning: #f59e0b; /* amber-500 */
-  --color-danger: #dc2626; /* red-600 */
+  --color-danger: #ef4444; /* red-500 */
   --color-info: #06b6d4; /* cyan-500 */
 
   /* Neutrals */
-  --color-bg: #f8fafc; /* slate-50 */
+  --color-bg: #f3f4f6; /* gray-100 matching HTML secondary */
   --color-surface: #ffffff;
   --color-border: #e5e7eb; /* gray-200 */
   --color-muted: #6b7280; /* gray-500 */
-  --color-text: #111827; /* gray-900 */
+  --color-text: #1f2937; /* gray-800 matching HTML dark */
+  --color-card-bg: #ffffff;
 
   /* Shadows & radii */
   --radius-sm: 6px;
