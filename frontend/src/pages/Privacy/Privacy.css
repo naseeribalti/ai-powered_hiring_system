@@ -1,0 +1,48 @@
+/* Privacy Page Styles */
+.privacy-hero {
+  padding: 72px 0 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.1),
+    rgba(16, 185, 129, 0.08)
+  );
+}
+.hero-title {
+  font-size: 40px;
+  font-weight: 800;
+}
+.hero-subtitle {
+  color: #475569;
+  margin-top: 8px;
+}
+.meta {
+  color: #64748b;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.privacy-content {
+  padding: 40px 0 64px;
+}
+.policy-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 18px rgba(2, 6, 23, 0.04);
+}
+.policy-card h2 {
+  font-size: 22px;
+  margin-top: 18px;
+  font-weight: 700;
+}
+.policy-card p {
+  color: #334155;
+}
+.policy-card ul {
+  padding-left: 20px;
+}
+.policy-card li {
+  color: #334155;
+  margin-bottom: 6px;
+}

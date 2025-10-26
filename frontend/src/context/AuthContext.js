@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI } from '../services/api';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { authAPI, usersAPI } from '../services/api';
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
@@ -17,6 +17,16 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     // Check if user is logged in on app start
+    const verifyToken = useCallback(async () => {
+        try {
+            const response = await authAPI.getProfile();
+            setUser(response.data.user);
+        } catch (error) {
+            console.error('Token verification failed:', error);
+            logout();
+        }
+    }, []);
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         const savedUser = localStorage.getItem('user');
@@ -33,17 +43,7 @@ export const AuthProvider = ({ children }) => {
             }
         }
         setLoading(false);
-    }, []);
-
-    const verifyToken = async () => {
-        try {
-            const response = await authAPI.getProfile();
-            setUser(response.data.user);
-        } catch (error) {
-            console.error('Token verification failed:', error);
-            logout();
-        }
-    };
+    }, [verifyToken]);
 
     const login = async (credentials) => {
         try {
@@ -69,6 +69,13 @@ export const AuthProvider = ({ children }) => {
     const register = async (userData) => {
         try {
             setLoading(true);
+
+            // Debug: Log what we're sending
+            console.log('📤 Registration attempt:', {
+                ...userData,
+                password: '[HIDDEN]'
+            });
+
             const response = await authAPI.register(userData);
             const { token, user: newUser } = response.data;
 
@@ -79,6 +86,26 @@ export const AuthProvider = ({ children }) => {
             toast.success(`Welcome to AI-Powered Hiring System, ${newUser.name}!`);
             return { success: true };
         } catch (error) {
+            console.error('❌ Registration error:', error.response?.data);
+
+            // Handle validation errors (422)
+            if (error.response?.status === 422 && error.response?.data?.errors) {
+                const validationErrors = error.response.data.errors;
+                console.log('🔍 Validation errors:', validationErrors);
+
+                // Show each validation error
+                validationErrors.forEach(err => {
+                    toast.error(`${err.field}: ${err.message}`);
+                });
+
+                // Return detailed error message
+                const errorMsg = validationErrors
+                    .map(err => `${err.field}: ${err.message}`)
+                    .join(', ');
+                return { success: false, message: errorMsg, errors: validationErrors };
+            }
+
+            // Handle other errors
             const message = error.response?.data?.message || 'Registration failed';
             toast.error(message);
             return { success: false, message };
@@ -111,6 +138,25 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const uploadProfilePhoto = async (file) => {
+        try {
+            const response = await usersAPI.uploadMyPhoto(file);
+            const updatedUser = response.data?.data?.user || response.data?.user;
+
+            if (updatedUser) {
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+                setUser(updatedUser);
+            }
+
+            toast.success('Profile photo updated');
+            return { success: true };
+        } catch (error) {
+            const message = error.response?.data?.message || 'Photo upload failed';
+            toast.error(message);
+            return { success: false, message };
+        }
+    };
+
     const value = {
         user,
         loading,
@@ -118,6 +164,7 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         updateProfile,
+        uploadProfilePhoto,
     };
 
     return (

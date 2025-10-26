@@ -4,13 +4,19 @@ import { useAuth } from '../context/AuthContext';
 
 const RegisterPage = () => {
     const [formData, setFormData] = useState({
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
         confirmPassword: '',
-        role: 'candidate'
+        role: 'jobSeeker',
+        phone: '',
+        companyName: '',
+        companyWebsite: '',
+        companyDetails: ''
     });
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const { register } = useAuth();
     const navigate = useNavigate();
 
@@ -23,19 +29,49 @@ const RegisterPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
 
         if (formData.password !== formData.confirmPassword) {
-            alert('Passwords do not match');
+            setError('Passwords do not match');
             return;
+        }
+
+        if (formData.password.length < 8) {
+            setError('Password must be at least 8 characters long');
+            return;
+        }
+
+        // Validate recruiter-specific fields
+        if (formData.role === 'recruiter') {
+            if (!formData.companyName || formData.companyName.trim().length < 2) {
+                setError('Company name is required for recruiters');
+                return;
+            }
+            if (!formData.phone || formData.phone.trim().length < 7) {
+                setError('Phone number is required for recruiters');
+                return;
+            }
         }
 
         setLoading(true);
 
+        // Remove confirmPassword and clean empty optional fields
         const { confirmPassword, ...userData } = formData;
+
+        // Remove empty strings for optional fields to prevent validation errors
+        // Backend .optional() only works with undefined/null, not empty strings
+        Object.keys(userData).forEach(key => {
+            if (userData[key] === '' || userData[key] === null) {
+                delete userData[key];
+            }
+        });
+
         const result = await register(userData);
 
         if (result.success) {
             navigate('/dashboard');
+        } else {
+            setError(result.message || 'Registration failed. Please try again.');
         }
 
         setLoading(false);
@@ -54,18 +90,40 @@ const RegisterPage = () => {
                                     <p className="text-muted">Create your account</p>
                                 </div>
 
+                                {error && (
+                                    <div className="alert alert-danger" role="alert">
+                                        {error}
+                                    </div>
+                                )}
+
                                 <form onSubmit={handleSubmit}>
                                     <div className="mb-3">
-                                        <label htmlFor="name" className="form-label">Full Name</label>
+                                        <label htmlFor="firstName" className="form-label">First Name</label>
                                         <input
                                             type="text"
                                             className="form-control"
-                                            id="name"
-                                            name="name"
-                                            value={formData.name}
+                                            id="firstName"
+                                            name="firstName"
+                                            value={formData.firstName}
                                             onChange={handleChange}
                                             required
-                                            placeholder="Enter your full name"
+                                            placeholder="Enter your first name"
+                                            minLength="2"
+                                        />
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label htmlFor="lastName" className="form-label">Last Name</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="lastName"
+                                            name="lastName"
+                                            value={formData.lastName}
+                                            onChange={handleChange}
+                                            required
+                                            placeholder="Enter your last name"
+                                            minLength="2"
                                         />
                                     </div>
 
@@ -93,11 +151,83 @@ const RegisterPage = () => {
                                             onChange={handleChange}
                                             required
                                         >
-                                            <option value="candidate">Job Candidate</option>
-                                            <option value="hr">HR Manager</option>
-                                            <option value="admin">Administrator</option>
+                                            <option value="jobSeeker">Job Seeker</option>
+                                            <option value="recruiter">Recruiter</option>
                                         </select>
+                                        <small className="text-muted">
+                                            {formData.role === 'recruiter' && 'Recruiters can post and manage job openings'}
+                                        </small>
                                     </div>
+
+                                    {/* Recruiter-specific fields */}
+                                    {formData.role === 'recruiter' && (
+                                        <>
+                                            <div className="mb-3">
+                                                <label htmlFor="companyName" className="form-label">
+                                                    Company Name <span className="text-danger">*</span>
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="companyName"
+                                                    name="companyName"
+                                                    value={formData.companyName}
+                                                    onChange={handleChange}
+                                                    required={formData.role === 'recruiter'}
+                                                    placeholder="Enter your company name"
+                                                    minLength="2"
+                                                />
+                                            </div>
+
+                                            <div className="mb-3">
+                                                <label htmlFor="phone" className="form-label">
+                                                    Phone Number <span className="text-danger">*</span>
+                                                </label>
+                                                <input
+                                                    type="tel"
+                                                    className="form-control"
+                                                    id="phone"
+                                                    name="phone"
+                                                    value={formData.phone}
+                                                    onChange={handleChange}
+                                                    required={formData.role === 'recruiter'}
+                                                    placeholder="+1 (555) 123-4567"
+                                                    minLength="7"
+                                                />
+                                            </div>
+
+                                            <div className="mb-3">
+                                                <label htmlFor="companyWebsite" className="form-label">
+                                                    Company Website <small className="text-muted">(Optional)</small>
+                                                </label>
+                                                <input
+                                                    type="url"
+                                                    className="form-control"
+                                                    id="companyWebsite"
+                                                    name="companyWebsite"
+                                                    value={formData.companyWebsite}
+                                                    onChange={handleChange}
+                                                    placeholder="https://www.example.com"
+                                                />
+                                            </div>
+
+                                            <div className="mb-3">
+                                                <label htmlFor="companyDetails" className="form-label">
+                                                    Company Details <small className="text-muted">(Optional)</small>
+                                                </label>
+                                                <textarea
+                                                    className="form-control"
+                                                    id="companyDetails"
+                                                    name="companyDetails"
+                                                    value={formData.companyDetails}
+                                                    onChange={handleChange}
+                                                    rows="3"
+                                                    placeholder="Brief description of your company"
+                                                    maxLength="1000"
+                                                />
+                                            </div>
+                                        </>
+                                    )}
 
                                     <div className="mb-3">
                                         <label htmlFor="password" className="form-label">Password</label>
@@ -109,8 +239,8 @@ const RegisterPage = () => {
                                             value={formData.password}
                                             onChange={handleChange}
                                             required
-                                            placeholder="Enter your password"
-                                            minLength="6"
+                                            placeholder="Enter your password (min 8 characters)"
+                                            minLength="8"
                                         />
                                     </div>
 
@@ -125,7 +255,7 @@ const RegisterPage = () => {
                                             onChange={handleChange}
                                             required
                                             placeholder="Confirm your password"
-                                            minLength="6"
+                                            minLength="8"
                                         />
                                     </div>
 

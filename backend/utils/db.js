@@ -20,12 +20,12 @@ const connectDB = async () => {
     try {
         mongoose.set('strictQuery', true);
 
-        // For development, allow connection timeout of 30 seconds
+        // For development, allow connection timeout of 5 seconds
         cachedConnection = await mongoose.connect(uri, {
             autoIndex: true,
             maxPoolSize: 10,
-            serverSelectionTimeoutMS: 30000,
-            socketTimeoutMS: 45000,
+            serverSelectionTimeoutMS: 5000,
+            socketTimeoutMS: 5000,
         });
 
         const connection = mongoose.connection;

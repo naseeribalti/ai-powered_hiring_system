@@ -1,4 +1,6 @@
 const Job = require('../models/Job');
+const User = require('../models/User');
+const { mapExperienceLevelToModel, mapJobTypeToModel } = require('../../config/mappers');
 
 const createJob = async (req, res, next) => {
     try {
@@ -9,7 +11,17 @@ const createJob = async (req, res, next) => {
 
         const job = await Job.create(jobData);
 
-        return res.status(201).json({ job });
+        // Add job to user's jobs_posted array
+        await User.findByIdAndUpdate(
+            req.user._id,
+            { $addToSet: { jobs_posted: job._id } },
+            { new: true }
+        );
+
+        return res.status(201).json({
+            job,
+            message: 'Job posted successfully'
+        });
     } catch (error) {
         return next(error);
     }
@@ -17,18 +29,35 @@ const createJob = async (req, res, next) => {
 
 const getJobs = async (req, res, next) => {
     try {
+        // Support both backend-native query keys and UI-friendly alternatives
         const {
-            search,
-            location,
-            skills,
-            salary_min,
-            job_type,
-            experience_level,
-            status = 'active',
-            page = 1,
-            limit = 10,
-            sort = '-createdAt',
+            search: qSearch,
+            location: qLocation,
+            skills: qSkills,
+            salary_min: qSalaryMin,
+            job_type: qJobType,
+            experience_level: qExperienceLevel,
+            status: qStatus,
+            page: qPage,
+            limit: qLimit,
+            sort: qSort,
+            // Alternatives from frontend/UI
+            keyword,
+            salaryMin,
+            jobType,
+            experienceLevel,
         } = req.query;
+
+        const search = qSearch || keyword || undefined;
+        const location = qLocation || undefined;
+        const skills = qSkills || undefined;
+        const salary_min = qSalaryMin || (salaryMin != null && salaryMin !== '' ? Number(salaryMin) : undefined);
+        const job_type = qJobType || mapJobTypeToModel(jobType);
+        const experience_level = qExperienceLevel || mapExperienceLevelToModel(experienceLevel);
+        const status = qStatus || 'active';
+        const page = Number(qPage || 1);
+        const limit = Number(qLimit || 10);
+        const sort = qSort || '-createdAt';
 
         const query = {};
 
@@ -70,12 +99,12 @@ const getJobs = async (req, res, next) => {
             return acc;
         }, {});
 
-        const skip = (Number(page) - 1) * Number(limit);
+        const skip = (page - 1) * limit;
 
         const jobs = await Job.find(query)
             .sort(sortFields)
             .skip(skip)
-            .limit(Number(limit))
+            .limit(limit)
             .populate('postedBy', 'firstName lastName email');
 
         const total = await Job.countDocuments(query);
@@ -83,10 +112,10 @@ const getJobs = async (req, res, next) => {
         return res.json({
             jobs,
             pagination: {
-                page: Number(page),
-                limit: Number(limit),
+                page,
+                limit,
                 total,
-                pages: Math.ceil(total / Number(limit)),
+                pages: Math.ceil(total / limit),
             },
         });
     } catch (error) {
@@ -151,6 +180,13 @@ const deleteJob = async (req, res, next) => {
 
         await job.deleteOne();
 
+        // Remove job from user's jobs_posted array
+        await User.findByIdAndUpdate(
+            req.user._id,
+            { $pull: { jobs_posted: id } },
+            { new: true }
+        );
+
         return res.json({ message: 'Job deleted successfully' });
     } catch (error) {
         return next(error);
@@ -184,6 +220,131 @@ const getMyJobs = async (req, res, next) => {
     }
 };
 
+/**
+ * Save a job for later
+ * 
+ * @route POST /api/jobs/:id/save
+ * @access Private (Job Seekers)
+ */
+const saveJob = async (req, res, next) => {
+    try {
+        const jobId = req.params.id;
+        const userId = req.user._id;
+
+        // Check if job exists
+        const job = await Job.findById(jobId);
+        if (!job) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Job not found'
+            });
+        }
+
+        // Check if already saved
+        const user = await User.findById(userId);
+        if (user.savedJobs && user.savedJobs.includes(jobId)) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Job already saved'
+            });
+        }
+
+        // Add to saved jobs with timestamp
+        await User.findByIdAndUpdate(
+            userId,
+            {
+                $addToSet: {
+                    savedJobs: {
+                        job: jobId,
+                        savedAt: new Date()
+                    }
+                }
+            }
+        );
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'Job saved successfully'
+        });
+
+    } catch (error) {
+        return next(error);
+    }
+};
+
+/**
+ * Unsave a job
+ * 
+ * @route DELETE /api/jobs/:id/save
+ * @access Private (Job Seekers)
+ */
+const unsaveJob = async (req, res, next) => {
+    try {
+        const jobId = req.params.id;
+        const userId = req.user._id;
+
+        await User.findByIdAndUpdate(
+            userId,
+            {
+                $pull: { savedJobs: { job: jobId } }
+            }
+        );
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'Job removed from saved'
+        });
+
+    } catch (error) {
+        return next(error);
+    }
+};
+
+/**
+ * Get all saved jobs
+ * 
+ * @route GET /api/jobs/saved
+ * @access Private (Job Seekers)
+ */
+const getSavedJobs = async (req, res, next) => {
+    try {
+        const userId = req.user._id;
+
+        const user = await User.findById(userId).populate({
+            path: 'savedJobs.job',
+            select: 'title description location salary jobType experienceLevel skills company status',
+            populate: {
+                path: 'company',
+                select: 'name logo'
+            }
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'User not found'
+            });
+        }
+
+        // Filter out null jobs (deleted jobs)
+        const savedJobs = user.savedJobs
+            .filter(item => item.job !== null)
+            .map(item => ({
+                ...item.job.toObject(),
+                savedAt: item.savedAt
+            }));
+
+        return res.status(200).json({
+            status: 'success',
+            results: savedJobs.length,
+            data: savedJobs
+        });
+
+    } catch (error) {
+        return next(error);
+    }
+};
+
 module.exports = {
     createJob,
     getJobs,
@@ -191,4 +352,7 @@ module.exports = {
     updateJob,
     deleteJob,
     getMyJobs,
+    saveJob,
+    unsaveJob,
+    getSavedJobs
 };

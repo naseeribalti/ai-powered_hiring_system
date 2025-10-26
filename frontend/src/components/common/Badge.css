@@ -1,0 +1,155 @@
+/* Badge Component Styles */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Sizes */
+.badge-small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.badge-medium {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.badge-large {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+/* Variants */
+.badge-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.badge-secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.badge-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.badge-danger {
+  background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+  color: white;
+}
+
+.badge-warning {
+  background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+  color: #333;
+}
+
+.badge-info {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+}
+
+.badge-light {
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #dee2e6;
+}
+
+.badge-dark {
+  background: #343a40;
+  color: white;
+}
+
+/* Pill Shape */
+.badge-pill {
+  border-radius: 50px;
+}
+
+/* Dot Badge (for notifications) */
+.badge-dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.badge-dot.badge-small {
+  width: 8px;
+  height: 8px;
+}
+
+.badge-dot.badge-large {
+  width: 12px;
+  height: 12px;
+}
+
+/* Count Badge */
+.badge-count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+}
+
+.badge-count.badge-small {
+  min-width: 16px;
+  height: 16px;
+  font-size: 0.6rem;
+}
+
+.badge-count.badge-large {
+  min-width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+}
+
+/* Hover Effect */
+.badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.badge-dot:hover {
+  transform: scale(1.2);
+}
+
+/* Outline Variants */
+.badge-outline-primary {
+  background: transparent;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.badge-outline-success {
+  background: transparent;
+  color: #11998e;
+  border: 2px solid #11998e;
+}
+
+.badge-outline-danger {
+  background: transparent;
+  color: #eb3349;
+  border: 2px solid #eb3349;
+}
+
+.badge-outline-warning {
+  background: transparent;
+  color: #f7971e;
+  border: 2px solid #f7971e;
+}
+
+.badge-outline-info {
+  background: transparent;
+  color: #4facfe;
+  border: 2px solid #4facfe;
+}

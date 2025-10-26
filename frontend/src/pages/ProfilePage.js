@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 const ProfilePage = () => {
-    const { user, updateProfile } = useAuth();
+    const { user, updateProfile, uploadProfilePhoto } = useAuth();
     const [formData, setFormData] = useState({
         name: user?.name || '',
         email: user?.email || '',
@@ -12,6 +12,8 @@ const ProfilePage = () => {
         experience: user?.experience || ''
     });
     const [loading, setLoading] = useState(false);
+    const [photoFile, setPhotoFile] = useState(null);
+    const [photoUploading, setPhotoUploading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -31,6 +33,23 @@ const ProfilePage = () => {
         }
 
         setLoading(false);
+    };
+
+    const handlePhotoChange = (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setPhotoFile(file);
+        }
+    };
+
+    const handlePhotoUpload = async () => {
+        if (!photoFile) return;
+        setPhotoUploading(true);
+        const result = await uploadProfilePhoto(photoFile);
+        if (result.success) {
+            setPhotoFile(null);
+        }
+        setPhotoUploading(false);
     };
 
     return (
@@ -172,10 +191,52 @@ const ProfilePage = () => {
                             </h5>
                         </div>
                         <div className="card-body">
+                            <div className="text-center mb-3">
+                                <img
+                                    src={user?.avatarUrl || 'https://via.placeholder.com/120?text=Avatar'}
+                                    alt="Avatar"
+                                    className="rounded-circle"
+                                    style={{ width: 120, height: 120, objectFit: 'cover' }}
+                                />
+                            </div>
+
+                            <div className="mb-3">
+                                <label htmlFor="photo" className="form-label">Profile Photo</label>
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    id="photo"
+                                    accept="image/*"
+                                    onChange={handlePhotoChange}
+                                />
+                                {photoFile && (
+                                    <div className="d-grid gap-2 mt-2">
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-primary"
+                                            onClick={handlePhotoUpload}
+                                            disabled={photoUploading}
+                                        >
+                                            {photoUploading ? (
+                                                <>
+                                                    <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                                                    Uploading...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <i className="fas fa-upload me-2"></i>
+                                                    Upload Photo
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
                             <div className="mb-3">
                                 <strong>Role:</strong>
                                 <span className={`badge ms-2 bg-${user?.role === 'admin' ? 'danger' :
-                                        user?.role === 'hr' ? 'warning' : 'primary'
+                                    user?.role === 'hr' ? 'warning' : 'primary'
                                     }`}>
                                     {user?.role}
                                 </span>

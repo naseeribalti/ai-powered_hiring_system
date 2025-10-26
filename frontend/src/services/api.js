@@ -1,5 +1,6 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { buildJobQueryParams } from '../utils/mappers';
 
 // Create axios instance with base configuration
 const api = axios.create({
@@ -51,13 +52,18 @@ api.interceptors.response.use(
 export const authAPI = {
     login: (credentials) => api.post('/auth/login', credentials),
     register: (userData) => api.post('/auth/register', userData),
-    getProfile: () => api.get('/auth/profile'),
-    updateProfile: (userData) => api.put('/auth/profile', userData),
+    getProfile: () => api.get('/auth/me'),
+    updateProfile: (userData) => api.put('/auth/me', userData),
 };
 
 // Jobs API calls
 export const jobsAPI = {
     getAll: (params = {}) => api.get('/jobs', { params }),
+    // Search helper that maps UI filters to backend query params
+    search: (filters = {}) => {
+        const params = buildJobQueryParams(filters);
+        return api.get('/jobs', { params });
+    },
     getById: (id) => api.get(`/jobs/${id}`),
     create: (jobData) => api.post('/jobs', jobData),
     update: (id, jobData) => api.put(`/jobs/${id}`, jobData),
@@ -73,7 +79,8 @@ export const applicationsAPI = {
     update: (id, applicationData) => api.put(`/applications/${id}`, applicationData),
     delete: (id) => api.delete(`/applications/${id}`),
     getMyApplications: () => api.get('/applications/my-applications'),
-    getJobApplications: (jobId) => api.get(`/applications/job/${jobId}`),
+    // Align with backend: GET /api/applications/jobs/:jobId/applications
+    getJobApplications: (jobId) => api.get(`/applications/jobs/${jobId}/applications`),
 };
 
 // Users API calls (for admin/hr)
@@ -82,6 +89,14 @@ export const usersAPI = {
     getById: (id) => api.get(`/users/${id}`),
     update: (id, userData) => api.put(`/users/${id}`, userData),
     delete: (id) => api.delete(`/users/${id}`),
+    // Current user's profile photo upload
+    uploadMyPhoto: (file) => {
+        const formData = new FormData();
+        formData.append('photo', file);
+        return api.post('/users/me/photo', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+    },
 };
 
 export default api;

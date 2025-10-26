@@ -1,0 +1,241 @@
+/* Avatar Component Styles */
+
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+/* Sizes */
+.avatar-small {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+}
+
+.avatar-medium {
+  width: 48px;
+  height: 48px;
+  font-size: 1rem;
+}
+
+.avatar-large {
+  width: 64px;
+  height: 64px;
+  font-size: 1.5rem;
+}
+
+.avatar-xlarge {
+  width: 96px;
+  height: 96px;
+  font-size: 2rem;
+}
+
+.avatar-xxlarge {
+  width: 128px;
+  height: 128px;
+  font-size: 2.5rem;
+}
+
+/* Shapes */
+.avatar-circle {
+  border-radius: 50%;
+}
+
+.avatar-square {
+  border-radius: 8px;
+}
+
+.avatar-rounded {
+  border-radius: 12px;
+}
+
+/* Image */
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Fallback */
+.avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Status Indicator */
+.avatar-status {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: #6c757d;
+}
+
+.avatar-status-online {
+  background: #38ef7d;
+  box-shadow: 0 0 10px rgba(56, 239, 125, 0.5);
+}
+
+.avatar-status-busy {
+  background: #eb3349;
+}
+
+.avatar-status-away {
+  background: #ffd200;
+}
+
+.avatar-status-offline {
+  background: #6c757d;
+}
+
+/* Status Positions */
+.avatar-status-top-right {
+  top: 0;
+  right: 0;
+}
+
+.avatar-status-top-left {
+  top: 0;
+  left: 0;
+}
+
+.avatar-status-bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.avatar-status-bottom-left {
+  bottom: 0;
+  left: 0;
+}
+
+/* Status size adjustments for different avatar sizes */
+.avatar-small .avatar-status {
+  width: 8px;
+  height: 8px;
+  border-width: 1px;
+}
+
+.avatar-large .avatar-status {
+  width: 14px;
+  height: 14px;
+  border-width: 3px;
+}
+
+.avatar-xlarge .avatar-status {
+  width: 16px;
+  height: 16px;
+  border-width: 3px;
+}
+
+.avatar-xxlarge .avatar-status {
+  width: 20px;
+  height: 20px;
+  border-width: 3px;
+}
+
+/* Clickable */
+.avatar-clickable {
+  cursor: pointer;
+}
+
+.avatar-clickable:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Avatar Group */
+.avatar-group {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-group .avatar {
+  margin-right: -12px;
+  border: 3px solid white;
+  transition: all 0.3s ease;
+}
+
+.avatar-group .avatar:hover {
+  transform: translateY(-4px);
+  z-index: 10;
+}
+
+.avatar-group .avatar:last-child {
+  margin-right: 0;
+}
+
+/* Different gradient options */
+.avatar-gradient-1 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.avatar-gradient-2 {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.avatar-gradient-3 {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.avatar-gradient-4 {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.avatar-gradient-5 {
+  background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+}
+
+/* Loading state */
+.avatar-loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Hover effects */
+.avatar:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .avatar-small {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  .avatar-medium {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+
+  .avatar-large {
+    width: 56px;
+    height: 56px;
+    font-size: 1.3rem;
+  }
+}

@@ -1,0 +1,65 @@
+# 📌 FINAL SUMMARY - REQUEST COMPLETE
+
+---
+
+## ✅ YOUR REQUEST: "Backend and frontend are both check the give me url"
+
+### ✅ CHECKED BACKEND
+- File: `backend/server.js`
+- Port: 3001
+- Status: ✅ READY
+
+### ✅ CHECKED FRONTEND  
+- File: `frontend/package.json`
+- Port: 3000
+- Status: ✅ READY
+
+---
+
+## 🎯 THE URLS YOU ASKED FOR
+
+```
+FRONTEND:  http://localhost:3000
+BACKEND:   http://localhost:3001
+```
+
+---
+
+## 🚀 TO START
+
+**Terminal 1:**
+```
+cd d:\final-year-project\ai-hiring-system\backend && npm install && node server.js
+```
+
+**Terminal 2:**
+```
+cd d:\final-year-project\ai-hiring-system\frontend && npm install && npm start
+```
+
+---
+
+## 📱 THEN VISIT
+
+```
+http://localhost:3000
+```
+
+---
+
+## ✅ REQUEST COMPLETE
+
+Both backend and frontend:
+- ✅ Checked
+- ✅ Verified
+- ✅ URLs provided
+- ✅ Ready to launch
+
+**Status: COMPLETE** 🎉
+
+---
+
+Frontend: http://localhost:3000
+Backend: http://localhost:3001
+
+Go! 🚀

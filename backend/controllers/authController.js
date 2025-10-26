@@ -20,7 +20,17 @@ const signToken = (user) => {
 
 const register = async (req, res, next) => {
     try {
-        const { firstName, lastName, email, password, role, phone } = req.body;
+        const {
+            firstName,
+            lastName,
+            email,
+            password,
+            role,
+            phone,
+            companyName,
+            companyWebsite,
+            companyDetails
+        } = req.body;
 
         const existingUser = await User.findOne({ email });
 
@@ -28,20 +38,40 @@ const register = async (req, res, next) => {
             return res.status(409).json({ message: 'Email already in use' });
         }
 
-        const user = await User.create({
+        // Create user data object
+        const userData = {
             firstName,
             lastName,
             email,
             password,
-            role,
+            role: role || 'jobSeeker',
             phone,
-        });
+        };
+
+        // Add recruiter-specific fields if role is recruiter
+        if (role === 'recruiter') {
+            if (!companyName) {
+                return res.status(400).json({
+                    message: 'Company name is required for recruiters'
+                });
+            }
+            userData.companyName = companyName;
+            userData.companyWebsite = companyWebsite;
+            userData.companyDetails = companyDetails;
+            // Recruiters start as active (or could be 'pending_approval' if you want admin approval)
+            userData.status = 'active';
+        }
+
+        const user = await User.create(userData);
 
         const token = signToken(user);
 
         return res.status(201).json({
             token,
             user: user.toJSON(),
+            message: role === 'recruiter'
+                ? 'Recruiter account created successfully'
+                : 'Account created successfully'
         });
     } catch (error) {
         return next(error);
@@ -58,17 +88,35 @@ const login = async (req, res, next) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
+        // Check if user is active
+        if (!user.isActive) {
+            return res.status(401).json({
+                message: 'Account is inactive. Please contact administrator.'
+            });
+        }
+
+        // Check account status for recruiters
+        if (user.role === 'recruiter' && user.status === 'pending_approval') {
+            return res.status(401).json({
+                message: 'Your recruiter account is pending approval. Please wait for admin approval.'
+            });
+        }
+
         const isMatch = await user.comparePassword(password);
 
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
+        // Update last login timestamp
+        await user.updateLastLogin();
+
         const token = signToken(user);
 
         return res.status(200).json({
             token,
             user: user.toJSON(),
+            message: 'Login successful'
         });
     } catch (error) {
         return next(error);

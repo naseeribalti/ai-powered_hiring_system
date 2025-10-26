@@ -1,0 +1,74 @@
+/* Contact Page Styles */
+.contact-hero {
+  padding: 72px 0 40px;
+  background: linear-gradient(
+    180deg,
+    rgba(34, 197, 94, 0.08),
+    rgba(99, 102, 241, 0.06)
+  );
+}
+.hero-title {
+  font-size: 40px;
+  font-weight: 800;
+}
+.hero-subtitle {
+  color: #475569;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.contact-content {
+  padding: 48px 0;
+}
+.contact-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 14px rgba(2, 6, 23, 0.04);
+}
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.contact-form .form-label {
+  font-weight: 600;
+  color: #0f172a;
+}
+.contact-form .form-control {
+  border-radius: 10px;
+}
+
+.channel-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+.channel-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eff6ff;
+  color: #2563eb;
+}
+.channel-title {
+  font-weight: 700;
+}
+.channel-value {
+  color: #475569;
+  font-size: 14px;
+}
+
+.map-placeholder img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}

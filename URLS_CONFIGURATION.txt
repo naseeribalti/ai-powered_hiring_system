@@ -1,0 +1,92 @@
+# 🎯 URLS & CONFIGURATION SUMMARY
+
+**October 25, 2025**
+
+---
+
+## 🌐 DIRECT URLS
+
+### Frontend
+```
+http://localhost:3000
+```
+
+### Backend
+```
+http://localhost:3001
+```
+
+### Health Check
+```
+http://localhost:3001/api/health
+```
+
+---
+
+## ⚡ ONE-LINE COMMANDS
+
+### Backend (Terminal 1)
+```
+cd d:\final-year-project\ai-hiring-system\backend && npm install && node server.js
+```
+
+### Frontend (Terminal 2)
+```
+cd d:\final-year-project\ai-hiring-system\frontend && npm install && npm start
+```
+
+---
+
+## 📊 PORTS & CONFIGURATION
+
+```
+Frontend:
+  Port: 3000
+  URL: http://localhost:3000
+  Tech: React 18.2, Router 6.8, Bootstrap 5.3
+  Proxy: http://localhost:3001
+
+Backend:
+  Port: 3001
+  URL: http://localhost:3001
+  Tech: Express, Node.js, MongoDB
+  Routes: /api/auth, /api/jobs, /api/applications
+
+Database:
+  Type: MongoDB
+  Status: Configured
+  Connection: Via backend config
+```
+
+---
+
+## 🔗 API ENDPOINTS
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | /api/health | Health check |
+| POST | /api/auth/login | Login |
+| POST | /api/auth/register | Register |
+| GET | /api/jobs | Get all jobs |
+| POST | /api/jobs | Create job |
+| GET | /api/applications | Get applications |
+| POST | /api/applications | Create application |
+
+---
+
+## ✅ VERIFICATION
+
+Frontend: ✅ http://localhost:3000 (Login page)  
+Backend: ✅ http://localhost:3001 (API server)  
+Health: ✅ http://localhost:3001/api/health (Status JSON)
+
+---
+
+## 🎊 READY TO LAUNCH!
+
+Both systems configured and ready. Start them and enjoy! 🚀
+
+```
+Frontend: http://localhost:3000
+Backend: http://localhost:3001
+```

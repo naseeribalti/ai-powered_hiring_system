@@ -1,0 +1,869 @@
+{
+  "info": {
+    "_postman_id": "ai-hiring-system-advanced-collection",
+    "name": "AI Hiring System API - Advanced Testing",
+    "description": "Enhanced Postman collection with automated workflows, test scripts, and assertions",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "created": "2025-10-25T00:00:00Z"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000/api",
+      "description": "API base URL"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "description": "JWT authentication token"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "description": "Current user ID"
+    },
+    {
+      "key": "job_id",
+      "value": "",
+      "description": "Current job ID"
+    },
+    {
+      "key": "application_id",
+      "value": "",
+      "description": "Current application ID"
+    },
+    {
+      "key": "recruiter_email",
+      "value": "recruiter@example.com",
+      "description": "Test recruiter email"
+    },
+    {
+      "key": "jobseeker_email",
+      "value": "jobseeker@example.com",
+      "description": "Test job seeker email"
+    },
+    {
+      "key": "test_password",
+      "value": "SecurePassword123",
+      "description": "Test password for all accounts"
+    }
+  ],
+  "item": [
+    {
+      "name": "Setup & Authentication",
+      "description": "Setup workflows and authentication tests",
+      "item": [
+        {
+          "name": "1️⃣ Setup - Check Backend Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Verify backend is running"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Backend is healthy', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().status).to.equal('ok');",
+                  "});",
+                  "",
+                  "console.log('✅ Backend health check passed');",
+                  "console.log('Uptime:', pm.response.json().uptime, 'seconds');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2️⃣ Auth - Register Job Seeker",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Seeker\",\n  \"email\": \"{{jobseeker_email}}\",\n  \"password\": \"{{test_password}}\",\n  \"role\": \"jobSeeker\",\n  \"phone\": \"+1-555-0001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Job seeker registered successfully', function() {",
+                  "  pm.response.to.have.status(201);",
+                  "  pm.expect(pm.response.json().user.role).to.equal('jobSeeker');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201 || pm.response.code === 409) {",
+                  "  console.log('✅ Job seeker account ready');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3️⃣ Auth - Login as Job Seeker",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{jobseeker_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Login successful', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  const response = pm.response.json();",
+                  "  pm.expect(response).to.have.property('token');",
+                  "  pm.expect(response.user.role).to.equal('jobSeeker');",
+                  "});",
+                  "",
+                  "const responseData = pm.response.json();",
+                  "pm.environment.set('token', responseData.token);",
+                  "pm.environment.set('user_id', responseData.user._id);",
+                  "",
+                  "console.log('✅ Logged in as job seeker');",
+                  "console.log('Token:', responseData.token.substring(0, 20) + '...');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4️⃣ Auth - Get Current User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "me"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Profile retrieved successfully', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().user).to.have.property('_id');",
+                  "  pm.expect(pm.response.json().user).to.have.property('email');",
+                  "});",
+                  "",
+                  "console.log('✅ Current user profile retrieved');"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Jobs Management",
+      "description": "Job browsing, creation, and management workflows",
+      "item": [
+        {
+          "name": "Browse Jobs (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/jobs?search=&location=&skills=&page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["jobs"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search term"
+                },
+                {
+                  "key": "location",
+                  "value": "",
+                  "description": "Location filter"
+                },
+                {
+                  "key": "skills",
+                  "value": "",
+                  "description": "Skills filter (comma-separated)"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Browse all available jobs (no authentication required)"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Jobs retrieved successfully', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json()).to.have.property('jobs');",
+                  "  pm.expect(pm.response.json()).to.have.property('pagination');",
+                  "});",
+                  "",
+                  "console.log('✅ Jobs list retrieved');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Job Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/jobs/{{job_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", "{{job_id}}"]
+            },
+            "description": "Get detailed information about a specific job"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.test('Job details retrieved', function() {",
+                  "    pm.expect(pm.response.json().job).to.have.property('_id');",
+                  "    pm.expect(pm.response.json().job).to.have.property('title');",
+                  "  });",
+                  "} else {",
+                  "  console.log('⚠️ Set job_id variable first');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "🔐 Recruiter: Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Recruiter\",\n  \"email\": \"{{recruiter_email}}\",\n  \"password\": \"{{test_password}}\",\n  \"role\": \"recruiter\",\n  \"phone\": \"+1-555-0002\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Recruiter registered or already exists', function() {",
+                  "  pm.expect([201, 409]).to.include(pm.response.code);",
+                  "});",
+                  "",
+                  "console.log('✅ Recruiter account ready');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "🔐 Recruiter: Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{recruiter_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Recruiter login successful', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const responseData = pm.response.json();",
+                  "pm.environment.set('recruiter_token', responseData.token);",
+                  "pm.environment.set('recruiter_id', responseData.user._id);",
+                  "",
+                  "console.log('✅ Logged in as recruiter');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "🔐 Create Job (Recruiter)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{recruiter_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Full Stack Developer\",\n  \"description\": \"We are looking for an experienced full stack developer to join our team. Must have 5+ years experience with modern web technologies.\",\n  \"requirements\": \"5+ years experience with React/Vue and Node.js. AWS or cloud experience preferred.\",\n  \"company\": \"TechCorp Inc\",\n  \"location\": \"San Francisco, CA\",\n  \"jobType\": \"full-time\",\n  \"experienceLevel\": \"senior\",\n  \"skills\": [\"React\", \"Node.js\", \"MongoDB\", \"AWS\"],\n  \"salary\": {\n    \"min\": 120000,\n    \"max\": 180000,\n    \"currency\": \"USD\"\n  },\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/jobs",
+              "host": ["{{base_url}}"],
+              "path": ["jobs"]
+            },
+            "description": "Create a new job posting (recruiters only)"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Job created successfully', function() {",
+                  "  pm.response.to.have.status(201);",
+                  "  pm.expect(pm.response.json().job).to.have.property('_id');",
+                  "});",
+                  "",
+                  "const jobData = pm.response.json().job;",
+                  "pm.environment.set('job_id', jobData._id);",
+                  "",
+                  "console.log('✅ Job created with ID:', jobData._id.substring(0, 12) + '...');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "🔐 Update Job (Recruiter)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{recruiter_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"paused\",\n  \"salary\": {\n    \"min\": 130000,\n    \"max\": 190000\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/jobs/{{job_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", "{{job_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Job updated successfully', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "console.log('✅ Job updated');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "🔐 Get My Job Postings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{recruiter_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jobs/my-jobs?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", "my-jobs"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('My jobs retrieved', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "console.log('✅ My job postings retrieved');"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Applications Workflow",
+      "description": "Complete application management workflow",
+      "item": [
+        {
+          "name": "Apply to Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobId\": \"{{job_id}}\",\n  \"coverLetter\": \"I am very interested in this position. I have 8 years of experience with React and Node.js and have successfully led multiple full-stack projects to production.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/applications",
+              "host": ["{{base_url}}"],
+              "path": ["applications"]
+            },
+            "description": "Submit an application for a job"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Application submitted successfully', function() {",
+                  "  pm.response.to.have.status(201);",
+                  "  pm.expect(pm.response.json().application).to.have.property('_id');",
+                  "  pm.expect(pm.response.json().application.status).to.equal('pending');",
+                  "});",
+                  "",
+                  "const appData = pm.response.json().application;",
+                  "pm.environment.set('application_id', appData._id);",
+                  "",
+                  "console.log('✅ Application submitted with ID:', appData._id.substring(0, 12) + '...');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "View My Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/applications/my-applications?status=&page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["applications", "my-applications"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Filter by status: pending, reviewed, interview, accepted, rejected"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Applications retrieved', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json()).to.have.property('applications');",
+                  "});",
+                  "",
+                  "console.log('✅ My applications retrieved');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "View Application Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/applications/{{application_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["applications", "{{application_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.test('Application details retrieved', function() {",
+                  "    pm.expect(pm.response.json().application).to.have.property('status');",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "🔐 Recruiter: View Job Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{recruiter_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/applications/jobs/{{job_id}}/applications?status=&page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["applications", "jobs", "{{job_id}}", "applications"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "View all applications for a specific job (recruiters only)"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Job applications retrieved', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json()).to.have.property('applications');",
+                  "  pm.expect(pm.response.json()).to.have.property('stats');",
+                  "});",
+                  "",
+                  "const stats = pm.response.json().stats;",
+                  "console.log('✅ Applications retrieved - Stats:', stats);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "🔐 Recruiter: Update Application Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{recruiter_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"interview\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/applications/{{application_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["applications", "{{application_id}}", "status"]
+            },
+            "description": "Update application status through the workflow (recruiters only)"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status updated successfully', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().application.status).to.equal('interview');",
+                  "});",
+                  "",
+                  "const app = pm.response.json().application;",
+                  "console.log('✅ Application status updated to:', app.status);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Error Handling & Edge Cases",
+      "description": "Test error scenarios and edge cases",
+      "item": [
+        {
+          "name": "❌ Invalid Credentials",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"wrong@example.com\",\n  \"password\": \"wrongpassword\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Should reject invalid credentials', function() {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "console.log('✅ Invalid credentials properly rejected');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "❌ Missing Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/applications/my-applications",
+              "host": ["{{base_url}}"],
+              "path": ["applications", "my-applications"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Should require authentication', function() {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "console.log('✅ Missing token properly rejected');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "❌ Insufficient Permissions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Job\",\n  \"description\": \"This should fail\",\n  \"company\": \"Test\",\n  \"location\": \"Test\",\n  \"jobType\": \"full-time\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/jobs",
+              "host": ["{{base_url}}"],
+              "path": ["jobs"]
+            },
+            "description": "Job seeker trying to create job (should fail)"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Should deny insufficient permissions', function() {",
+                  "  pm.response.to.have.status(403);",
+                  "});",
+                  "",
+                  "console.log('✅ Insufficient permissions properly rejected');"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Complete Workflow Scenarios",
+      "description": "End-to-end workflow scenarios",
+      "item": [
+        {
+          "name": "📋 Scenario 1: Complete Job Application Flow",
+          "description": "1. Login as job seeker → 2. Browse jobs → 3. View job details → 4. Apply to job → 5. View my applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/applications/my-applications",
+              "host": ["{{base_url}}"],
+              "path": ["applications", "my-applications"]
+            }
+          }
+        },
+        {
+          "name": "📋 Scenario 2: Recruiter Job Management Flow",
+          "description": "1. Login as recruiter → 2. Create job → 3. View my jobs → 4. View applications → 5. Update application status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{recruiter_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jobs/my-jobs",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", "my-jobs"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

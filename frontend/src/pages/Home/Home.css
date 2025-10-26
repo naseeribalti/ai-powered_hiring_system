@@ -1,0 +1,107 @@
+/* Marketing Home Page */
+.home-hero {
+  padding: 88px 0 40px;
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.12),
+    rgba(34, 211, 238, 0.08)
+  );
+}
+.hero-title {
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+.hero-subtitle {
+  color: #475569;
+  margin-top: 10px;
+  font-size: 18px;
+}
+.gradient-text {
+  background: linear-gradient(90deg, #6366f1, #22d3ee, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cta-group {
+  margin-top: 16px;
+}
+.trust-note {
+  color: #64748b;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.home-features {
+  padding: 48px 0;
+  background: #fff;
+}
+.feature-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 18px;
+  height: 100%;
+  box-shadow: 0 8px 18px rgba(2, 6, 23, 0.04);
+}
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eff6ff;
+  color: #2563eb;
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+.feature-title {
+  font-weight: 700;
+}
+.feature-desc {
+  color: #475569;
+  font-size: 14px;
+}
+
+.home-testimonials {
+  padding: 40px 0;
+  background: linear-gradient(
+    180deg,
+    rgba(16, 185, 129, 0.08),
+    rgba(99, 102, 241, 0.06)
+  );
+}
+.testimonial-card {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+}
+.quote {
+  font-size: 20px;
+  font-weight: 700;
+}
+.author {
+  color: #475569;
+  margin-top: 8px;
+}
+
+.home-cta {
+  padding: 48px 0 72px;
+  background: #fff;
+}
+.cta-card {
+  text-align: center;
+  background: #0f172a;
+  color: #fff;
+  border-radius: 16px;
+  padding: 28px;
+}
+.cta-card .btn-outline-primary {
+  color: #93c5fd;
+  border-color: #93c5fd;
+}

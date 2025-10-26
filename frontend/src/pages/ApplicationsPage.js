@@ -18,9 +18,12 @@ const ApplicationsPage = () => {
             setLoading(true);
             let response;
 
-            if (user?.role === 'candidate') {
+            // Job seekers see only their applications
+            if (user?.role === 'jobSeeker') {
                 response = await applicationsAPI.getMyApplications();
-            } else {
+            }
+            // Recruiters and admins see all applications
+            else if (user?.role === 'recruiter' || user?.role === 'admin') {
                 response = await applicationsAPI.getAll();
             }
 
@@ -56,7 +59,7 @@ const ApplicationsPage = () => {
                 <div className="col-12">
                     <h1 className="h3 mb-4">
                         <i className="fas fa-file-alt me-2"></i>
-                        {user?.role === 'candidate' ? 'My Applications' : 'All Applications'}
+                        {user?.role === 'jobSeeker' ? 'My Applications' : 'All Applications'}
                     </h1>
                 </div>
             </div>
@@ -90,7 +93,7 @@ const ApplicationsPage = () => {
                                             <tr>
                                                 <th>Application ID</th>
                                                 <th>Job ID</th>
-                                                {user?.role !== 'candidate' && <th>Candidate</th>}
+                                                {user?.role !== 'jobSeeker' && <th>Candidate</th>}
                                                 <th>Applied Date</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
@@ -107,7 +110,7 @@ const ApplicationsPage = () => {
                                                             Job #{application.job_id}
                                                         </span>
                                                     </td>
-                                                    {user?.role !== 'candidate' && (
+                                                    {user?.role !== 'jobSeeker' && (
                                                         <td>
                                                             <div className="d-flex align-items-center">
                                                                 <i className="fas fa-user-circle me-2 text-muted"></i>
@@ -129,7 +132,7 @@ const ApplicationsPage = () => {
                                                                 <i className="fas fa-eye me-1"></i>
                                                                 View
                                                             </button>
-                                                            {(user?.role === 'hr' || user?.role === 'admin') && (
+                                                            {(user?.role === 'recruiter' || user?.role === 'admin') && (
                                                                 <>
                                                                     <button className="btn btn-outline-success btn-sm">
                                                                         <i className="fas fa-check me-1"></i>
@@ -157,7 +160,7 @@ const ApplicationsPage = () => {
                             <p className="text-muted">
                                 {filterStatus !== 'all'
                                     ? 'Try adjusting your filter criteria.'
-                                    : user?.role === 'candidate'
+                                    : user?.role === 'jobSeeker'
                                         ? "You haven't applied to any jobs yet."
                                         : 'No applications have been submitted yet.'}
                             </p>

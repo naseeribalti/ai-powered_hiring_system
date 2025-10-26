@@ -2,8 +2,8 @@ const express = require('express');
 const { body, param } = require('express-validator');
 
 const jobController = require('../controllers/jobController');
-const authMiddleware = require('../middleware/auth');
-const authorize = require('../middleware/authorize');
+const { protect: authMiddleware, authorize } = require('../middleware/auth');
+const { requireActiveRecruiter, canManageJob } = require('../middleware/roleMiddleware');
 const validate = require('../middleware/validation');
 
 const router = express.Router();
@@ -77,33 +77,46 @@ const idValidation = [param('id').isMongoId().withMessage('Invalid job ID')];
 
 router.get('/', jobController.getJobs);
 
-router.get('/my-jobs', authMiddleware, authorize('recruiter', 'admin'), jobController.getMyJobs);
+// Get saved jobs - requires authentication
+router.get('/saved', authMiddleware, jobController.getSavedJobs);
+
+// Get recruiter's own jobs - requires active recruiter status
+router.get('/my-jobs', authMiddleware, requireActiveRecruiter, jobController.getMyJobs);
 
 router.get('/:id', idValidation, validate, jobController.getJobById);
 
+// Save/Unsave job - requires authentication
+router.post('/:id/save', authMiddleware, idValidation, validate, jobController.saveJob);
+router.delete('/:id/save', authMiddleware, idValidation, validate, jobController.unsaveJob);
+
+// Create job - requires active recruiter status
 router.post(
     '/',
     authMiddleware,
-    authorize('recruiter', 'admin'),
+    requireActiveRecruiter,
     jobValidation,
     validate,
     jobController.createJob
 );
 
+// Update job - requires authentication and job ownership
 router.put(
     '/:id',
     authMiddleware,
     authorize('recruiter', 'admin'),
+    canManageJob,
     idValidation,
     jobUpdateValidation,
     validate,
     jobController.updateJob
 );
 
+// Delete job - requires authentication and job ownership
 router.delete(
     '/:id',
     authMiddleware,
     authorize('recruiter', 'admin'),
+    canManageJob,
     idValidation,
     validate,
     jobController.deleteJob

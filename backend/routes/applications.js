@@ -2,8 +2,7 @@ const express = require('express');
 const { body, param } = require('express-validator');
 
 const applicationController = require('../controllers/applicationController');
-const authMiddleware = require('../middleware/auth');
-const authorize = require('../middleware/authorize');
+const { protect: authMiddleware, authorize } = require('../middleware/auth');
 const validate = require('../middleware/validation');
 
 const router = express.Router();
@@ -28,6 +27,9 @@ const statusUpdateValidation = [
         .isIn(['pending', 'reviewed', 'interview', 'accepted', 'rejected'])
         .withMessage('Invalid status'),
 ];
+
+// Get all applications (for admin/recruiter)
+router.get('/', authMiddleware, authorize('recruiter', 'admin'), applicationController.getAllApplications);
 
 router.post('/', authMiddleware, authorize('jobSeeker'), applyValidation, validate, applicationController.applyToJob);
 

@@ -1,6 +1,47 @@
 const Application = require('../models/Application');
 const Job = require('../models/Job');
 
+const getAllApplications = async (req, res, next) => {
+    try {
+        const { status, page = 1, limit = 10 } = req.query;
+
+        const query = {};
+        if (status) {
+            query.status = status;
+        }
+
+        // If user is a recruiter, only show applications for their jobs
+        if (req.user.role === 'recruiter') {
+            const myJobs = await Job.find({ postedBy: req.user._id }).select('_id');
+            const myJobIds = myJobs.map(job => job._id);
+            query.job = { $in: myJobIds };
+        }
+
+        const skip = (Number(page) - 1) * Number(limit);
+
+        const applications = await Application.find(query)
+            .populate('applicant', 'firstName lastName email')
+            .populate('job', 'title company location')
+            .sort({ appliedAt: -1 })
+            .skip(skip)
+            .limit(Number(limit));
+
+        const total = await Application.countDocuments(query);
+
+        return res.json({
+            applications,
+            pagination: {
+                page: Number(page),
+                limit: Number(limit),
+                total,
+                pages: Math.ceil(total / Number(limit)),
+            },
+        });
+    } catch (error) {
+        return next(error);
+    }
+};
+
 const applyToJob = async (req, res, next) => {
     try {
         const { jobId, coverLetter } = req.body;
@@ -183,6 +224,7 @@ const getApplicationById = async (req, res, next) => {
 };
 
 module.exports = {
+    getAllApplications,
     applyToJob,
     getMyApplications,
     getJobApplications,
