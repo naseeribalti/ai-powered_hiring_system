@@ -505,8 +505,8 @@
 
 .testimonials-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
 }
 
 .testimonial-card {
@@ -515,6 +515,24 @@
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   transition: all 0.3s;
+  animation: slideInLeft 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.testimonial-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.testimonial-card:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.testimonial-card:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.testimonial-card:nth-child(4) {
+  animation-delay: 0.55s;
 }
 
 /* Dark theme adjustments */
@@ -749,7 +767,8 @@
   }
 
   .testimonials-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 
   .companies-grid {
@@ -793,6 +812,10 @@
 
   .companies-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .testimonials-grid {
+    grid-template-columns: 1fr;
   }
 
   .cta-buttons {
@@ -893,11 +916,6 @@
 
 .feature-card:nth-child(4) {
   animation-delay: 0.4s;
-}
-
-/* Testimonial card fade in */
-.testimonial-card {
-  animation: fadeIn 0.8s ease-out;
 }
 
 /* Step items scale up */

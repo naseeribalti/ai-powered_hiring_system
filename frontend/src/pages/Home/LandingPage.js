@@ -88,6 +88,14 @@ const LandingPage = () => {
             image: '/images/testimonials/user3.jpg',
             rating: 5,
             text: 'Best hiring platform I\'ve used. The interface is intuitive and the job recommendations are spot-on.'
+        },
+        {
+            name: 'David Rodriguez',
+            role: 'Data Scientist',
+            company: 'Analytics Pro',
+            image: '/images/testimonials/user4.jpg',
+            rating: 5,
+            text: 'Landed my ideal role within a month! The career analytics helped me target the right opportunities.'
         }
     ];
 

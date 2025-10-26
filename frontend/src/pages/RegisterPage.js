@@ -252,7 +252,7 @@ const RegisterPage = () => {
                                                             value={formData.firstName}
                                                             onChange={handleChange}
                                                             required
-                                                            placeholder="First Name"
+                                                            placeholder=" "
                                                         />
                                                         <label htmlFor="firstName" className="floating-label">First Name</label>
                                                     </div>
@@ -268,7 +268,7 @@ const RegisterPage = () => {
                                                             value={formData.lastName}
                                                             onChange={handleChange}
                                                             required
-                                                            placeholder="Last Name"
+                                                            placeholder=" "
                                                         />
                                                         <label htmlFor="lastName" className="floating-label">Last Name</label>
                                                     </div>
@@ -286,7 +286,7 @@ const RegisterPage = () => {
                                                         value={formData.email}
                                                         onChange={handleChange}
                                                         required
-                                                        placeholder="Email Address"
+                                                        placeholder=" "
                                                     />
                                                     <label htmlFor="email" className="floating-label">Email Address</label>
                                                 </div>
@@ -319,7 +319,7 @@ const RegisterPage = () => {
                                                                 value={formData.companyName}
                                                                 onChange={handleChange}
                                                                 required
-                                                                placeholder="Company Name"
+                                                                placeholder=" "
                                                             />
                                                             <label htmlFor="companyName" className="floating-label">Company Name</label>
                                                         </div>
@@ -336,7 +336,7 @@ const RegisterPage = () => {
                                                                 value={formData.phone}
                                                                 onChange={handleChange}
                                                                 required
-                                                                placeholder="Phone Number"
+                                                                placeholder=" "
                                                             />
                                                             <label htmlFor="phone" className="floating-label">Phone Number</label>
                                                         </div>
@@ -352,9 +352,9 @@ const RegisterPage = () => {
                                                                 name="companyWebsite"
                                                                 value={formData.companyWebsite}
                                                                 onChange={handleChange}
-                                                                placeholder="Company Website (Optional)"
+                                                                placeholder=" "
                                                             />
-                                                            <label htmlFor="companyWebsite" className="floating-label">Company Website</label>
+                                                            <label htmlFor="companyWebsite" className="floating-label">Company Website (Optional)</label>
                                                         </div>
                                                     </div>
 
@@ -414,9 +414,9 @@ const RegisterPage = () => {
                                                                 name="companyAddress"
                                                                 value={formData.companyAddress}
                                                                 onChange={handleChange}
-                                                                placeholder="Company Address (Optional)"
+                                                                placeholder=" "
                                                             />
-                                                            <label htmlFor="companyAddress" className="floating-label">Company Address</label>
+                                                            <label htmlFor="companyAddress" className="floating-label">Company Address (Optional)</label>
                                                         </div>
                                                     </div>
 
@@ -430,9 +430,9 @@ const RegisterPage = () => {
                                                                 rows="3"
                                                                 value={formData.companyDetails}
                                                                 onChange={handleChange}
-                                                                placeholder="About the company (Optional)"
+                                                                placeholder=" "
                                                             />
-                                                            <label htmlFor="companyDetails" className="floating-label">About Company</label>
+                                                            <label htmlFor="companyDetails" className="floating-label">About Company (Optional)</label>
                                                         </div>
                                                     </div>
                                                 </>
@@ -449,7 +449,7 @@ const RegisterPage = () => {
                                                         value={formData.password}
                                                         onChange={handleChange}
                                                         required
-                                                        placeholder="Password"
+                                                        placeholder=" "
                                                     />
                                                     <label htmlFor="password" className="floating-label">Password</label>
                                                     <button
@@ -479,7 +479,7 @@ const RegisterPage = () => {
                                                         value={formData.confirmPassword}
                                                         onChange={handleChange}
                                                         required
-                                                        placeholder="Confirm Password"
+                                                        placeholder=" "
                                                     />
                                                     <label htmlFor="confirmPassword" className="floating-label">Confirm Password</label>
                                                     <button
