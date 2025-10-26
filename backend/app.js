@@ -19,19 +19,39 @@ const app = express();
 // CORS configuration
 // Allow FRONTEND_URL from env (comma-separated for multiple), fallback to localhost in dev
 const rawOrigins = process.env.FRONTEND_URL || 'http://localhost:3000';
-const allowedOrigins = rawOrigins.split(',').map(o => o.trim());
+const allowedOrigins = rawOrigins.split(',').map(o => o.trim()).filter(Boolean);
 
-app.use(cors({
+// Helper: allow wildcard origins like https://*.vercel.app
+const isOriginAllowed = (origin) => {
+    if (!origin) return true; // non-browser or same-origin
+    for (const entry of allowedOrigins) {
+        if (entry === '*' || entry === origin) return true;
+        // Support simple wildcard subdomain patterns
+        if (entry.includes('*')) {
+            // Escape regex special chars except '*', then replace '*' with '.*'
+            const pattern = '^' + entry
+                .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+                .replace(/\*/g, '.*') + '$';
+            const re = new RegExp(pattern);
+            if (re.test(origin)) return true;
+        }
+    }
+    return false;
+};
+
+const corsOptions = {
     origin: (origin, callback) => {
-        // Allow same-origin or non-browser requests (no origin)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.includes(origin)) return callback(null, true);
+        if (isOriginAllowed(origin)) return callback(null, true);
         return callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
-}));
+};
+
+app.use(cors(corsOptions));
+// Ensure preflight requests are handled
+app.options('*', cors(corsOptions));
 
 // Basic middleware
 app.use(express.json());

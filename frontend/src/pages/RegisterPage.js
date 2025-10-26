@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import './ModernAuth.css';
 
 const RegisterPage = () => {
     const [formData, setFormData] = useState({
@@ -17,17 +18,11 @@ const RegisterPage = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [currentStep, setCurrentStep] = useState(1);
     const { register } = useAuth();
     const navigate = useNavigate();
-
-    const passwordChecks = {
-        length: formData.password.length >= 8,
-        upper: /[A-Z]/.test(formData.password),
-        lower: /[a-z]/.test(formData.password),
-        number: /\d/.test(formData.password),
-        symbol: /[^A-Za-z0-9]/.test(formData.password)
-    };
 
     const handleChange = (e) => {
         setFormData({
@@ -36,39 +31,57 @@ const RegisterPage = () => {
         });
     };
 
+    const handleRoleChange = (role) => {
+        setFormData({
+            ...formData,
+            role: role
+        });
+    };
+
+    const validateStep1 = () => {
+        return formData.firstName && formData.lastName && formData.email && formData.role;
+    };
+
+    const validateStep2 = () => {
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match');
+            return false;
+        }
+        if (formData.password.length < 8) {
+            setError('Password must be at least 8 characters long');
+            return false;
+        }
+        if (formData.role === 'recruiter' && (!formData.companyName || !formData.phone)) {
+            setError('Company name and phone are required for recruiters');
+            return false;
+        }
+        return true;
+    };
+
+    const handleNext = () => {
+        setError('');
+        if (currentStep === 1 && validateStep1()) {
+            setCurrentStep(2);
+        }
+    };
+
+    const handleBack = () => {
+        setCurrentStep(1);
+        setError('');
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
-        if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
+        if (!validateStep2()) {
             return;
-        }
-
-        if (formData.password.length < 8) {
-            setError('Password must be at least 8 characters long');
-            return;
-        }
-
-        // Validate recruiter-specific fields
-        if (formData.role === 'recruiter') {
-            if (!formData.companyName || formData.companyName.trim().length < 2) {
-                setError('Company name is required for recruiters');
-                return;
-            }
-            if (!formData.phone || formData.phone.trim().length < 7) {
-                setError('Phone number is required for recruiters');
-                return;
-            }
         }
 
         setLoading(true);
 
-        // Remove confirmPassword and clean empty optional fields
         const { confirmPassword, ...userData } = formData;
 
-        // Remove empty strings for optional fields to prevent validation errors
-        // Backend .optional() only works with undefined/null, not empty strings
         Object.keys(userData).forEach(key => {
             if (userData[key] === '' || userData[key] === null) {
                 delete userData[key];
@@ -87,238 +100,320 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="min-vh-100 d-flex align-items-center bg-light">
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-md-6 col-lg-5">
-                        <div className="card shadow">
-                            <div className="card-body p-4">
-                                <div className="text-center mb-4">
-                                    <i className="fas fa-robot fa-3x text-primary mb-3"></i>
-                                    <h2 className="card-title">Join AI Hiring System</h2>
-                                    <p className="text-muted">Create your account</p>
+        <div className="modern-auth-container">
+            <div className="auth-background">
+                <div className="floating-shapes">
+                    <div className="shape shape-1"></div>
+                    <div className="shape shape-2"></div>
+                    <div className="shape shape-3"></div>
+                    <div className="shape shape-4"></div>
+                </div>
+            </div>
+
+            <div className="container-fluid h-100">
+                <div className="row h-100">
+                    {/* Left Side - Branding */}
+                    <div className="col-lg-6 d-none d-lg-flex auth-branding">
+                        <div className="branding-content">
+                            <div className="brand-logo">
+                                <div className="logo-icon">
+                                    <i className="fas fa-robot"></i>
+                                </div>
+                                <h1 className="brand-title">AI Hiring System</h1>
+                            </div>
+                            <div className="brand-description">
+                                <h2>Join Our Platform!</h2>
+                                <p>Create your account and start your journey with AI-powered recruitment. Whether you're a job seeker or recruiter, we've got you covered.</p>
+                                <div className="stats-grid">
+                                    <div className="stat-item">
+                                        <div className="stat-number">10K+</div>
+                                        <div className="stat-label">Active Users</div>
+                                    </div>
+                                    <div className="stat-item">
+                                        <div className="stat-number">500+</div>
+                                        <div className="stat-label">Companies</div>
+                                    </div>
+                                    <div className="stat-item">
+                                        <div className="stat-number">95%</div>
+                                        <div className="stat-label">Success Rate</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Side - Register Form */}
+                    <div className="col-lg-6 col-12 auth-form-section">
+                        <div className="auth-form-container">
+                            <div className="glass-card">
+                                <div className="card-header">
+                                    <div className="mobile-brand d-lg-none">
+                                        <div className="logo-icon-small">
+                                            <i className="fas fa-robot"></i>
+                                        </div>
+                                        <h3>AI Hiring System</h3>
+                                    </div>
+                                    <h2 className="form-title">Create Account</h2>
+                                    <p className="form-subtitle">Join thousands of users today</p>
+
+                                    {/* Progress Steps */}
+                                    <div className="progress-steps">
+                                        <div className={`step ${currentStep >= 1 ? 'active' : ''}`}>
+                                            <div className="step-number">1</div>
+                                            <span>Basic Info</span>
+                                        </div>
+                                        <div className="step-line"></div>
+                                        <div className={`step ${currentStep >= 2 ? 'active' : ''}`}>
+                                            <div className="step-number">2</div>
+                                            <span>Complete</span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {error && (
-                                    <div className="alert alert-danger" role="alert">
-                                        {error}
+                                    <div className="error-alert">
+                                        <i className="fas fa-exclamation-triangle"></i>
+                                        <span>{error}</span>
                                     </div>
                                 )}
 
-                                <form onSubmit={handleSubmit}>
-                                    <div className="mb-3">
-                                        <label htmlFor="firstName" className="form-label">First Name</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="firstName"
-                                            name="firstName"
-                                            value={formData.firstName}
-                                            onChange={handleChange}
-                                            required
-                                            placeholder="Enter your first name"
-                                            minLength="2"
-                                        />
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label htmlFor="lastName" className="form-label">Last Name</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="lastName"
-                                            name="lastName"
-                                            value={formData.lastName}
-                                            onChange={handleChange}
-                                            required
-                                            placeholder="Enter your last name"
-                                            minLength="2"
-                                        />
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label htmlFor="email" className="form-label">Email</label>
-                                        <input
-                                            type="email"
-                                            className="form-control"
-                                            id="email"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            required
-                                            placeholder="Enter your email"
-                                        />
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label htmlFor="role" className="form-label">Role</label>
-                                        <select
-                                            className="form-select"
-                                            id="role"
-                                            name="role"
-                                            value={formData.role}
-                                            onChange={handleChange}
-                                            required
-                                        >
-                                            <option value="jobSeeker">Job Seeker</option>
-                                            <option value="recruiter">Recruiter</option>
-                                        </select>
-                                        <small className="text-muted">
-                                            {formData.role === 'recruiter' && 'Recruiters can post and manage job openings'}
-                                        </small>
-                                    </div>
-
-                                    {/* Recruiter-specific fields */}
-                                    {formData.role === 'recruiter' && (
-                                        <>
-                                            <div className="mb-3">
-                                                <label htmlFor="companyName" className="form-label">
-                                                    Company Name <span className="text-danger">*</span>
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="companyName"
-                                                    name="companyName"
-                                                    value={formData.companyName}
-                                                    onChange={handleChange}
-                                                    required={formData.role === 'recruiter'}
-                                                    placeholder="Enter your company name"
-                                                    minLength="2"
-                                                />
+                                <form onSubmit={handleSubmit} className="auth-form">
+                                    {currentStep === 1 && (
+                                        <div className="step-content">
+                                            {/* Role Selection */}
+                                            <div className="role-selection">
+                                                <label className="role-label">I am a:</label>
+                                                <div className="role-options">
+                                                    <div
+                                                        className={`role-card ${formData.role === 'jobSeeker' ? 'selected' : ''}`}
+                                                        onClick={() => handleRoleChange('jobSeeker')}
+                                                    >
+                                                        <div className="role-icon">
+                                                            <i className="fas fa-user-tie"></i>
+                                                        </div>
+                                                        <h4>Job Seeker</h4>
+                                                        <p>Looking for opportunities</p>
+                                                    </div>
+                                                    <div
+                                                        className={`role-card ${formData.role === 'recruiter' ? 'selected' : ''}`}
+                                                        onClick={() => handleRoleChange('recruiter')}
+                                                    >
+                                                        <div className="role-icon">
+                                                            <i className="fas fa-building"></i>
+                                                        </div>
+                                                        <h4>Recruiter</h4>
+                                                        <p>Hiring talented people</p>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div className="mb-3">
-                                                <label htmlFor="phone" className="form-label">
-                                                    Phone Number <span className="text-danger">*</span>
-                                                </label>
-                                                <input
-                                                    type="tel"
-                                                    className="form-control"
-                                                    id="phone"
-                                                    name="phone"
-                                                    value={formData.phone}
-                                                    onChange={handleChange}
-                                                    required={formData.role === 'recruiter'}
-                                                    placeholder="+1 (555) 123-4567"
-                                                    minLength="7"
-                                                />
+                                            <div className="form-row">
+                                                <div className="form-group">
+                                                    <div className="input-wrapper">
+                                                        <i className="fas fa-user input-icon"></i>
+                                                        <input
+                                                            type="text"
+                                                            className="modern-input"
+                                                            id="firstName"
+                                                            name="firstName"
+                                                            value={formData.firstName}
+                                                            onChange={handleChange}
+                                                            required
+                                                            placeholder="First Name"
+                                                        />
+                                                        <label htmlFor="firstName" className="floating-label">First Name</label>
+                                                    </div>
+                                                </div>
+                                                <div className="form-group">
+                                                    <div className="input-wrapper">
+                                                        <i className="fas fa-user input-icon"></i>
+                                                        <input
+                                                            type="text"
+                                                            className="modern-input"
+                                                            id="lastName"
+                                                            name="lastName"
+                                                            value={formData.lastName}
+                                                            onChange={handleChange}
+                                                            required
+                                                            placeholder="Last Name"
+                                                        />
+                                                        <label htmlFor="lastName" className="floating-label">Last Name</label>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div className="mb-3">
-                                                <label htmlFor="companyWebsite" className="form-label">
-                                                    Company Website <small className="text-muted">(Optional)</small>
-                                                </label>
-                                                <input
-                                                    type="url"
-                                                    className="form-control"
-                                                    id="companyWebsite"
-                                                    name="companyWebsite"
-                                                    value={formData.companyWebsite}
-                                                    onChange={handleChange}
-                                                    placeholder="https://www.example.com"
-                                                />
+                                            <div className="form-group">
+                                                <div className="input-wrapper">
+                                                    <i className="fas fa-envelope input-icon"></i>
+                                                    <input
+                                                        type="email"
+                                                        className="modern-input"
+                                                        id="email"
+                                                        name="email"
+                                                        value={formData.email}
+                                                        onChange={handleChange}
+                                                        required
+                                                        placeholder="Email Address"
+                                                    />
+                                                    <label htmlFor="email" className="floating-label">Email Address</label>
+                                                </div>
                                             </div>
 
-                                            <div className="mb-3">
-                                                <label htmlFor="companyDetails" className="form-label">
-                                                    Company Details <small className="text-muted">(Optional)</small>
-                                                </label>
-                                                <textarea
-                                                    className="form-control"
-                                                    id="companyDetails"
-                                                    name="companyDetails"
-                                                    value={formData.companyDetails}
-                                                    onChange={handleChange}
-                                                    rows="3"
-                                                    placeholder="Brief description of your company"
-                                                    maxLength="1000"
-                                                />
-                                            </div>
-                                        </>
+                                            <button
+                                                type="button"
+                                                className="modern-btn primary-btn"
+                                                onClick={handleNext}
+                                                disabled={!validateStep1()}
+                                            >
+                                                <span>Continue</span>
+                                                <i className="fas fa-arrow-right btn-icon"></i>
+                                            </button>
+                                        </div>
                                     )}
 
-                                    <div className="mb-3">
-                                        <label htmlFor="password" className="form-label">Password</label>
-                                        <input
-                                            type="password"
-                                            className="form-control"
-                                            id="password"
-                                            name="password"
-                                            value={formData.password}
-                                            onChange={handleChange}
-                                            required
-                                            placeholder="Enter your password (min 8 characters)"
-                                            minLength="8"
-                                        />
-                                        {formData.password && (
-                                            <div className="mt-2" style={{ fontSize: '0.875rem' }}>
-                                                <div className="d-flex gap-2 mb-1">
-                                                    <span className={passwordChecks.length ? 'text-success' : 'text-muted'}>✓ At least 8 characters</span>
-                                                </div>
-                                                <div className="d-flex gap-2 flex-wrap">
-                                                    <span className={passwordChecks.upper ? 'text-success' : 'text-muted'}>✓ Uppercase</span>
-                                                    <span className={passwordChecks.lower ? 'text-success' : 'text-muted'}>✓ Lowercase</span>
-                                                    <span className={passwordChecks.number ? 'text-success' : 'text-muted'}>✓ Number</span>
-                                                    <span className={passwordChecks.symbol ? 'text-success' : 'text-muted'}>✓ Symbol</span>
+                                    {currentStep === 2 && (
+                                        <div className="step-content">
+                                            {formData.role === 'recruiter' && (
+                                                <>
+                                                    <div className="form-group">
+                                                        <div className="input-wrapper">
+                                                            <i className="fas fa-building input-icon"></i>
+                                                            <input
+                                                                type="text"
+                                                                className="modern-input"
+                                                                id="companyName"
+                                                                name="companyName"
+                                                                value={formData.companyName}
+                                                                onChange={handleChange}
+                                                                required
+                                                                placeholder="Company Name"
+                                                            />
+                                                            <label htmlFor="companyName" className="floating-label">Company Name</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <div className="input-wrapper">
+                                                            <i className="fas fa-phone input-icon"></i>
+                                                            <input
+                                                                type="tel"
+                                                                className="modern-input"
+                                                                id="phone"
+                                                                name="phone"
+                                                                value={formData.phone}
+                                                                onChange={handleChange}
+                                                                required
+                                                                placeholder="Phone Number"
+                                                            />
+                                                            <label htmlFor="phone" className="floating-label">Phone Number</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <div className="input-wrapper">
+                                                            <i className="fas fa-globe input-icon"></i>
+                                                            <input
+                                                                type="url"
+                                                                className="modern-input"
+                                                                id="companyWebsite"
+                                                                name="companyWebsite"
+                                                                value={formData.companyWebsite}
+                                                                onChange={handleChange}
+                                                                placeholder="Company Website (Optional)"
+                                                            />
+                                                            <label htmlFor="companyWebsite" className="floating-label">Company Website</label>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )}
+
+                                            <div className="form-group">
+                                                <div className="input-wrapper">
+                                                    <i className="fas fa-lock input-icon"></i>
+                                                    <input
+                                                        type={showPassword ? "text" : "password"}
+                                                        className="modern-input"
+                                                        id="password"
+                                                        name="password"
+                                                        value={formData.password}
+                                                        onChange={handleChange}
+                                                        required
+                                                        placeholder="Password"
+                                                    />
+                                                    <label htmlFor="password" className="floating-label">Password</label>
+                                                    <button
+                                                        type="button"
+                                                        className="password-toggle"
+                                                        onClick={() => setShowPassword(!showPassword)}
+                                                    >
+                                                        <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                                                    </button>
                                                 </div>
                                             </div>
-                                        )}
-                                    </div>
 
-                                    <div className="mb-3">
-                                        <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-                                        <input
-                                            type="password"
-                                            className="form-control"
-                                            id="confirmPassword"
-                                            name="confirmPassword"
-                                            value={formData.confirmPassword}
-                                            onChange={handleChange}
-                                            required
-                                            placeholder="Confirm your password"
-                                            minLength="8"
-                                        />
-                                    </div>
+                                            <div className="form-group">
+                                                <div className="input-wrapper">
+                                                    <i className="fas fa-lock input-icon"></i>
+                                                    <input
+                                                        type={showConfirmPassword ? "text" : "password"}
+                                                        className="modern-input"
+                                                        id="confirmPassword"
+                                                        name="confirmPassword"
+                                                        value={formData.confirmPassword}
+                                                        onChange={handleChange}
+                                                        required
+                                                        placeholder="Confirm Password"
+                                                    />
+                                                    <label htmlFor="confirmPassword" className="floating-label">Confirm Password</label>
+                                                    <button
+                                                        type="button"
+                                                        className="password-toggle"
+                                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                    >
+                                                        <i className={`fas ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                                                    </button>
+                                                </div>
+                                            </div>
 
-                                    <div className="mb-3">
-                                        <div className="form-check">
-                                            <input
-                                                type="checkbox"
-                                                className="form-check-input"
-                                                id="acceptTerms"
-                                                checked={acceptedTerms}
-                                                onChange={(e) => setAcceptedTerms(e.target.checked)}
-                                                required
-                                            />
-                                            <label className="form-check-label" htmlFor="acceptTerms">
-                                                I agree to the <Link to="/terms">Terms of Service</Link>
-                                            </label>
+                                            <div className="form-actions">
+                                                <button
+                                                    type="button"
+                                                    className="modern-btn secondary-btn"
+                                                    onClick={handleBack}
+                                                >
+                                                    <i className="fas fa-arrow-left btn-icon"></i>
+                                                    <span>Back</span>
+                                                </button>
+
+                                                <button
+                                                    type="submit"
+                                                    className="modern-btn primary-btn"
+                                                    disabled={loading}
+                                                >
+                                                    {loading ? (
+                                                        <>
+                                                            <div className="btn-spinner"></div>
+                                                            <span>Creating...</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <span>Create Account</span>
+                                                            <i className="fas fa-check btn-icon"></i>
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </div>
                                         </div>
+                                    )}
+
+                                    <div className="auth-switch">
+                                        <p>Already have an account?</p>
+                                        <Link to="/login" className="switch-link">
+                                            Sign In
+                                            <i className="fas fa-arrow-right"></i>
+                                        </Link>
                                     </div>
-
-                                    <button
-                                        type="submit"
-                                        className="btn btn-primary w-100"
-                                        disabled={loading}
-                                    >
-                                        {loading ? (
-                                            <>
-                                                <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                                                Creating account...
-                                            </>
-                                        ) : (
-                                            'Create Account'
-                                        )}
-                                    </button>
                                 </form>
-
-                                <div className="text-center mt-3">
-                                    <p className="mb-0">
-                                        Already have an account?
-                                        <Link to="/login" className="text-primary ms-1">Sign in</Link>
-                                    </p>
-                                </div>
                             </div>
                         </div>
                     </div>

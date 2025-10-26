@@ -7,9 +7,26 @@ import { buildJobQueryParams } from '../utils/mappers';
 // - In development, default to local backend
 const defaultBaseURL = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:3001/api';
 
+// Resolve baseURL with safe normalization
+// - If REACT_APP_API_URL is provided as a full backend root (e.g., https://api.example.com),
+//   automatically append "/api" to align with backend mount points
+// - Avoid double "/api" when already present or when using the defaultBaseURL
+const resolveBaseURL = () => {
+    const envBase = (process.env.REACT_APP_API_URL || '').replace(/\/+$/, '');
+    if (!envBase) return defaultBaseURL; // use sensible defaults
+
+    // If a full URL is provided without trailing /api, append it
+    const isFullUrl = /^https?:\/\//i.test(envBase);
+    const endsWithApi = /\/api$/i.test(envBase);
+    if (isFullUrl && !endsWithApi) {
+        return `${envBase}/api`;
+    }
+    return envBase || defaultBaseURL;
+};
+
 // Create axios instance with base configuration
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || defaultBaseURL,
+    baseURL: resolveBaseURL(),
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
