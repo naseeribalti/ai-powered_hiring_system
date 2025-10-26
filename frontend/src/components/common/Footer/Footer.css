@@ -1,0 +1,63 @@
+.app-footer {
+  background: var(--color-surface, #0f172a);
+  color: var(--color-text, #e5e7eb);
+  border-top: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
+}
+
+.app-footer .brand {
+  display: flex;
+  align-items: center;
+  font-size: 1.05rem;
+}
+
+.app-footer .footer-heading {
+  font-weight: 600;
+  color: #ffc107;
+  margin-bottom: 1rem;
+}
+
+.app-footer .footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.app-footer .footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.app-footer .footer-links a,
+.app-footer .contact-info a {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.app-footer .footer-links a:hover,
+.app-footer .contact-info a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.app-footer .social-links a {
+  color: #0d6efd;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.app-footer .social-links a:hover {
+  transform: translateY(-2px);
+}
+
+.app-footer .footer-bottom {
+  border-top-color: var(--color-border, rgba(255, 255, 255, 0.08)) !important;
+}
+
+.app-footer .footer-bottom strong {
+  color: #ffc107;
+}
+
+.app-footer .contact {
+  opacity: 0.9;
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Monochrome mask icon for Safari pinned tabs. Fill color is set by the 'color' attribute in the link tag. -->
+  <g fill="#000" fill-rule="nonzero">
+    <!-- Briefcase body -->
+    <path d="M16 22h32a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4V26a4 4 0 0 1 4-4zm8-6h16a4 4 0 0 1 4 4v2H20v-2a4 4 0 0 1 4-4zm2 4v-2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2H26z"/>
+    <!-- Simple AI nodes and links inside briefcase -->
+    <circle cx="24" cy="36" r="2"/>
+    <circle cx="40" cy="32" r="2"/>
+    <circle cx="36" cy="44" r="2"/>
+    <path d="M26 36h10M40 34l-3 8" stroke="#000" stroke-width="2"/>
+  </g>
+</svg>

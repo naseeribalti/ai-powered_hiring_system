@@ -1,6 +1,7 @@
 // Home.jsx - Public Marketing Home Page
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Footer from '../../components/common/Footer/Footer';
 import './Home.css';
 
 const features = [
@@ -86,6 +87,7 @@ const Home = () => {
             </section>
 
             {/* Chatbot is global in App.js */}
+            <Footer />
         </div>
     );
 };
