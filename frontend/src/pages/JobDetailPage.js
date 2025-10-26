@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import axios from 'axios';
+import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import {
@@ -18,7 +18,7 @@ import {
 } from 'react-icons/fa';
 import '../styles/JobDetailPage.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+// Using shared API client; baseURL is handled centrally
 
 const JobDetailPage = () => {
     const { id } = useParams();
@@ -39,10 +39,7 @@ const JobDetailPage = () => {
 
     const fetchJobDetails = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`${API_URL}/jobs/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await api.get(`/jobs/${id}`);
             // Backend returns { job: {...} }
             setJob(response.data.job || response.data);
         } catch (error) {
@@ -56,10 +53,7 @@ const JobDetailPage = () => {
 
     const checkApplicationStatus = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`${API_URL}/applications`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await api.get('/applications');
             const applications = response.data;
             const applied = applications.some(app => app.job._id === id || app.job === id);
             setHasApplied(applied);
@@ -76,12 +70,7 @@ const JobDetailPage = () => {
 
         setApplying(true);
         try {
-            const token = localStorage.getItem('token');
-            await axios.post(
-                `${API_URL}/applications`,
-                { jobId: id },
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
+            await api.post('/applications', { jobId: id });
             toast.success('Application submitted successfully!');
             setHasApplied(true);
             navigate('/applications');

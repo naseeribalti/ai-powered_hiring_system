@@ -17,8 +17,17 @@ const RegisterPage = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
     const { register } = useAuth();
     const navigate = useNavigate();
+
+    const passwordChecks = {
+        length: formData.password.length >= 8,
+        upper: /[A-Z]/.test(formData.password),
+        lower: /[a-z]/.test(formData.password),
+        number: /\d/.test(formData.password),
+        symbol: /[^A-Za-z0-9]/.test(formData.password)
+    };
 
     const handleChange = (e) => {
         setFormData({
@@ -242,6 +251,19 @@ const RegisterPage = () => {
                                             placeholder="Enter your password (min 8 characters)"
                                             minLength="8"
                                         />
+                                        {formData.password && (
+                                            <div className="mt-2" style={{ fontSize: '0.875rem' }}>
+                                                <div className="d-flex gap-2 mb-1">
+                                                    <span className={passwordChecks.length ? 'text-success' : 'text-muted'}>✓ At least 8 characters</span>
+                                                </div>
+                                                <div className="d-flex gap-2 flex-wrap">
+                                                    <span className={passwordChecks.upper ? 'text-success' : 'text-muted'}>✓ Uppercase</span>
+                                                    <span className={passwordChecks.lower ? 'text-success' : 'text-muted'}>✓ Lowercase</span>
+                                                    <span className={passwordChecks.number ? 'text-success' : 'text-muted'}>✓ Number</span>
+                                                    <span className={passwordChecks.symbol ? 'text-success' : 'text-muted'}>✓ Symbol</span>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="mb-3">
@@ -257,6 +279,22 @@ const RegisterPage = () => {
                                             placeholder="Confirm your password"
                                             minLength="8"
                                         />
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <div className="form-check">
+                                            <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="acceptTerms"
+                                                checked={acceptedTerms}
+                                                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                                                required
+                                            />
+                                            <label className="form-check-label" htmlFor="acceptTerms">
+                                                I agree to the <Link to="/terms">Terms of Service</Link>
+                                            </label>
+                                        </div>
                                     </div>
 
                                     <button

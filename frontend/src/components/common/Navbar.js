@@ -64,20 +64,27 @@ const Navbar = () => {
 
                     <ul className="navbar-nav">
                         <li className="nav-item dropdown">
-                            <a
+                            <button
                                 className="nav-link dropdown-toggle"
-                                href="#"
-                                role="button"
+                                id="userMenuButton"
                                 data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                style={{ background: 'transparent' }}
                             >
                                 <i className="fas fa-user-circle me-1"></i>
                                 {user?.name}
-                            </a>
-                            <ul className="dropdown-menu">
+                            </button>
+                            <ul className="dropdown-menu" aria-labelledby="userMenuButton">
                                 <li>
                                     <Link className="dropdown-item" to="/profile">
                                         <i className="fas fa-user me-2"></i>
                                         Profile
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link className="dropdown-item" to="/terms">
+                                        <i className="fas fa-file-contract me-2"></i>
+                                        Terms
                                     </Link>
                                 </li>
                                 <li><hr className="dropdown-divider" /></li>

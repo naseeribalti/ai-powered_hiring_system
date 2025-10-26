@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { applicationsAPI } from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -9,11 +9,7 @@ const ApplicationsPage = () => {
     const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState('all');
 
-    useEffect(() => {
-        fetchApplications();
-    }, []);
-
-    const fetchApplications = async () => {
+    const fetchApplications = useCallback(async () => {
         try {
             setLoading(true);
             let response;
@@ -33,7 +29,11 @@ const ApplicationsPage = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [user?.role]);
+
+    useEffect(() => {
+        fetchApplications();
+    }, [fetchApplications]);
 
     const filteredApplications = applications.filter(application => {
         return filterStatus === 'all' || application.status === filterStatus;

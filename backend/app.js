@@ -17,8 +17,17 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 
 // CORS configuration
+// Allow FRONTEND_URL from env (comma-separated for multiple), fallback to localhost in dev
+const rawOrigins = process.env.FRONTEND_URL || 'http://localhost:3000';
+const allowedOrigins = rawOrigins.split(',').map(o => o.trim());
+
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: (origin, callback) => {
+        // Allow same-origin or non-browser requests (no origin)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']

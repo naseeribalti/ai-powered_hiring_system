@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import { FaBell, FaCheck, FaTrash, FaClock, FaBriefcase, FaUser, FaExclamationCircle, FaTimes } from 'react-icons/fa';
 import Badge from './Badge';
 import './NotificationBell.css';
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+import { notificationsAPI } from '../../services/api';
 
 const NotificationBell = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -34,10 +32,7 @@ const NotificationBell = () => {
 
     const fetchNotifications = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`${API_URL}/api/notifications`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await notificationsAPI.list();
             setNotifications(response.data);
             setUnreadCount(response.data.filter(n => !n.read).length);
         } catch (error) {
@@ -47,10 +42,7 @@ const NotificationBell = () => {
 
     const markAsRead = async (notificationId) => {
         try {
-            const token = localStorage.getItem('token');
-            await axios.put(`${API_URL}/api/notifications/${notificationId}/read`, {}, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await notificationsAPI.markRead(notificationId);
             setNotifications(notifications.map(n =>
                 n._id === notificationId ? { ...n, read: true } : n
             ));
@@ -63,10 +55,7 @@ const NotificationBell = () => {
     const markAllAsRead = async () => {
         setLoading(true);
         try {
-            const token = localStorage.getItem('token');
-            await axios.put(`${API_URL}/api/notifications/read-all`, {}, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await notificationsAPI.markAllRead();
             setNotifications(notifications.map(n => ({ ...n, read: true })));
             setUnreadCount(0);
         } catch (error) {
@@ -78,10 +67,7 @@ const NotificationBell = () => {
 
     const deleteNotification = async (notificationId) => {
         try {
-            const token = localStorage.getItem('token');
-            await axios.delete(`${API_URL}/api/notifications/${notificationId}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await notificationsAPI.remove(notificationId);
             setNotifications(notifications.filter(n => n._id !== notificationId));
             if (!notifications.find(n => n._id === notificationId)?.read) {
                 setUnreadCount(prev => Math.max(0, prev - 1));
@@ -94,10 +80,7 @@ const NotificationBell = () => {
     const clearAll = async () => {
         setLoading(true);
         try {
-            const token = localStorage.getItem('token');
-            await axios.delete(`${API_URL}/api/notifications`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await notificationsAPI.clearAll();
             setNotifications([]);
             setUnreadCount(0);
         } catch (error) {

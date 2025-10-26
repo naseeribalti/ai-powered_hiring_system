@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FaBookmark, FaRegBookmark, FaMapMarkerAlt, FaBriefcase, FaClock, FaDollarSign, FaBuilding } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import './SavedJobsPage.css';
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+import { jobsAPI } from '../services/api';
 
 const SavedJobsPage = () => {
     const [savedJobs, setSavedJobs] = useState([]);
@@ -19,10 +17,7 @@ const SavedJobsPage = () => {
 
     const fetchSavedJobs = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`${API_URL}/api/jobs/saved`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await jobsAPI.getSaved();
             setSavedJobs(response.data);
         } catch (error) {
             console.error('Error fetching saved jobs:', error);
@@ -34,10 +29,7 @@ const SavedJobsPage = () => {
 
     const handleUnsave = async (jobId) => {
         try {
-            const token = localStorage.getItem('token');
-            await axios.delete(`${API_URL}/api/jobs/${jobId}/save`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await jobsAPI.unsave(jobId);
             setSavedJobs(savedJobs.filter(job => job._id !== jobId));
             toast.success('Job removed from saved');
         } catch (error) {

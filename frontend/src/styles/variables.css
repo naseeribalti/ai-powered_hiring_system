@@ -1,0 +1,45 @@
+:root {
+  /* Brand colors */
+  --color-primary: #2563eb; /* indigo-600 */
+  --color-primary-hover: #1d4ed8; /* indigo-700 */
+  --color-secondary: #0ea5e9; /* sky-500 */
+  --color-success: #16a34a; /* green-600 */
+  --color-warning: #f59e0b; /* amber-500 */
+  --color-danger: #dc2626; /* red-600 */
+  --color-info: #06b6d4; /* cyan-500 */
+
+  /* Neutrals */
+  --color-bg: #f8fafc; /* slate-50 */
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb; /* gray-200 */
+  --color-muted: #6b7280; /* gray-500 */
+  --color-text: #111827; /* gray-900 */
+
+  /* Shadows & radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.12);
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    Cantarell, Noto Sans, Helvetica Neue, Arial, 'Apple Color Emoji',
+    'Segoe UI Emoji';
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+}

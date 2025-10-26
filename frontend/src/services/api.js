@@ -2,9 +2,14 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { buildJobQueryParams } from '../utils/mappers';
 
+// Determine sensible default base URL
+// - In production (Vercel), prefer hitting "/api" so Vercel rewrites can proxy to the backend
+// - In development, default to local backend
+const defaultBaseURL = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:3001/api';
+
 // Create axios instance with base configuration
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001/api',
+    baseURL: process.env.REACT_APP_API_URL || defaultBaseURL,
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
@@ -69,6 +74,10 @@ export const jobsAPI = {
     update: (id, jobData) => api.put(`/jobs/${id}`, jobData),
     delete: (id) => api.delete(`/jobs/${id}`),
     getMyJobs: () => api.get('/jobs/my-jobs'),
+    // Saved jobs
+    getSaved: () => api.get('/jobs/saved'),
+    save: (id) => api.post(`/jobs/${id}/save`),
+    unsave: (id) => api.delete(`/jobs/${id}/save`),
 };
 
 // Applications API calls
@@ -97,6 +106,15 @@ export const usersAPI = {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
     },
+};
+
+// Notifications API calls
+export const notificationsAPI = {
+    list: () => api.get('/notifications'),
+    markRead: (id) => api.put(`/notifications/${id}/read`),
+    markAllRead: () => api.put('/notifications/read-all'),
+    remove: (id) => api.delete(`/notifications/${id}`),
+    clearAll: () => api.delete('/notifications'),
 };
 
 export default api;

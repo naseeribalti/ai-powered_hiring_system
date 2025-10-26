@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import axios from 'axios';
+import api from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import {
     FaArrowLeft,
@@ -15,7 +15,7 @@ import {
 } from 'react-icons/fa';
 import '../styles/JobApplicationPage.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+// Using shared API client; baseURL is handled centrally
 
 const JobApplicationPage = () => {
     const { id } = useParams();
@@ -76,10 +76,7 @@ const JobApplicationPage = () => {
 
     const fetchJobDetails = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`${API_URL}/jobs/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await api.get(`/jobs/${id}`);
             // Backend returns { job: {...} }
             setJob(response.data.job || response.data);
         } catch (error) {
@@ -93,10 +90,7 @@ const JobApplicationPage = () => {
 
     const loadUserProfile = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`${API_URL}/auth/me`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await api.get('/auth/me');
             const profile = response.data;
 
             setFormData(prev => ({
@@ -199,14 +193,12 @@ const JobApplicationPage = () => {
 
         setSubmitting(true);
         try {
-            const token = localStorage.getItem('token');
-            await axios.post(
-                `${API_URL}/applications`,
+            await api.post(
+                '/applications',
                 {
                     jobId: id,
                     applicationData: formData
-                },
-                { headers: { Authorization: `Bearer ${token}` } }
+                }
             );
 
             // Clear saved draft
