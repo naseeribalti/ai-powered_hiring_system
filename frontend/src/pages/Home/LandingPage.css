@@ -31,6 +31,20 @@
   z-index: -1;
 }
 
+.hero-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Subtle overlay to improve text contrast on gradient */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.25) 0%,
+    rgba(0, 0, 0, 0.35) 50%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+  pointer-events: none;
+}
+
 .hero-shapes {
   position: absolute;
   width: 100%;
@@ -106,6 +120,7 @@
   line-height: 1.2;
   margin-bottom: 1.5rem;
   animation: fadeInUp 0.8s ease-out;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
 .gradient-text {
@@ -118,9 +133,10 @@
 .hero-subtitle {
   font-size: 1.25rem;
   line-height: 1.7;
-  opacity: 0.95;
+  color: rgba(255, 255, 255, 0.95);
   margin-bottom: 2.5rem;
   animation: fadeInUp 0.8s ease-out 0.2s both;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
 }
 
 .hero-search {
@@ -193,7 +209,7 @@
 }
 
 .hero-quick-links span {
-  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.95);
   font-size: 0.9rem;
 }
 
@@ -498,6 +514,42 @@
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   transition: all 0.3s;
+}
+
+/* Dark theme adjustments */
+:root[data-theme='dark'] .stats-section,
+:root[data-theme='system'] .stats-section {
+  background: var(--color-surface);
+}
+
+:root[data-theme='dark'] .stat-number,
+:root[data-theme='system'] .stat-number {
+  background: none;
+  -webkit-text-fill-color: initial;
+  color: var(--color-text);
+}
+
+:root[data-theme='dark'] .features-section,
+:root[data-theme='system'] .features-section {
+  background: var(--color-bg);
+}
+
+:root[data-theme='dark'] .feature-card,
+:root[data-theme='system'] .feature-card,
+:root[data-theme='dark'] .testimonial-card,
+:root[data-theme='system'] .testimonial-card,
+:root[data-theme='dark'] .company-logo,
+:root[data-theme='system'] .company-logo {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-md);
+}
+
+:root[data-theme='dark'] .section-title,
+:root[data-theme='system'] .section-title,
+:root[data-theme='dark'] .section-subtitle,
+:root[data-theme='system'] .section-subtitle {
+  color: var(--color-text);
 }
 
 .testimonial-card:hover {

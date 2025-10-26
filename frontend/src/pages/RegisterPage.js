@@ -3,6 +3,36 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './ModernAuth.css';
 
+// Inline password strength indicator component
+const PasswordStrength = ({ password }) => {
+    const checks = [
+        { label: '8+ chars', pass: password.length >= 8 },
+        { label: 'upper', pass: /[A-Z]/.test(password) },
+        { label: 'lower', pass: /[a-z]/.test(password) },
+        { label: 'number', pass: /\d/.test(password) },
+        { label: 'symbol', pass: /[^A-Za-z0-9]/.test(password) },
+    ];
+    const score = checks.filter(c => c.pass).length;
+    const percent = (score / checks.length) * 100;
+    const colors = ['#ef4444', '#f97316', '#f59e0b', '#22c55e', '#16a34a'];
+    const color = colors[Math.max(0, score - 1)];
+
+    return (
+        <div>
+            <div style={{ height: 6, background: '#e5e7eb', borderRadius: 999 }}>
+                <div style={{ width: `${percent}%`, height: 6, background: color, borderRadius: 999, transition: 'width .2s ease' }} />
+            </div>
+            <div style={{ display: 'flex', gap: 8, marginTop: 6, fontSize: 12, color: 'var(--text-secondary)' }}>
+                {checks.map((c, idx) => (
+                    <span key={idx} style={{ opacity: c.pass ? 1 : 0.6 }}>
+                        {c.pass ? '✓' : '○'} {c.label}
+                    </span>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 const RegisterPage = () => {
     const [formData, setFormData] = useState({
         firstName: '',
@@ -14,7 +44,10 @@ const RegisterPage = () => {
         phone: '',
         companyName: '',
         companyWebsite: '',
-        companyDetails: ''
+        companyDetails: '',
+        companyType: '',
+        employeesCount: '',
+        companyAddress: ''
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -324,6 +357,84 @@ const RegisterPage = () => {
                                                             <label htmlFor="companyWebsite" className="floating-label">Company Website</label>
                                                         </div>
                                                     </div>
+
+                                                    <div className="form-row">
+                                                        <div className="form-group">
+                                                            <div className="input-wrapper">
+                                                                <i className="fas fa-industry input-icon"></i>
+                                                                <select
+                                                                    className="modern-input"
+                                                                    id="companyType"
+                                                                    name="companyType"
+                                                                    value={formData.companyType}
+                                                                    onChange={handleChange}
+                                                                >
+                                                                    <option value="" disabled hidden></option>
+                                                                    <option value="IT">IT</option>
+                                                                    <option value="Tech">Tech</option>
+                                                                    <option value="Business">Business</option>
+                                                                    <option value="Health">Health</option>
+                                                                    <option value="Education">Education</option>
+                                                                    <option value="Finance">Finance</option>
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                                <label htmlFor="companyType" className="floating-label">Company Type</label>
+                                                            </div>
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <div className="input-wrapper">
+                                                                <i className="fas fa-users input-icon"></i>
+                                                                <select
+                                                                    className="modern-input"
+                                                                    id="employeesCount"
+                                                                    name="employeesCount"
+                                                                    value={formData.employeesCount}
+                                                                    onChange={handleChange}
+                                                                >
+                                                                    <option value="" disabled hidden></option>
+                                                                    <option value="1-10">1-10</option>
+                                                                    <option value="11-50">11-50</option>
+                                                                    <option value="51-200">51-200</option>
+                                                                    <option value="201-500">201-500</option>
+                                                                    <option value="501-1000">501-1000</option>
+                                                                    <option value="1000+">1000+</option>
+                                                                </select>
+                                                                <label htmlFor="employeesCount" className="floating-label">Employees</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <div className="input-wrapper">
+                                                            <i className="fas fa-map-marker-alt input-icon"></i>
+                                                            <input
+                                                                type="text"
+                                                                className="modern-input"
+                                                                id="companyAddress"
+                                                                name="companyAddress"
+                                                                value={formData.companyAddress}
+                                                                onChange={handleChange}
+                                                                placeholder="Company Address (Optional)"
+                                                            />
+                                                            <label htmlFor="companyAddress" className="floating-label">Company Address</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <div className="input-wrapper">
+                                                            <i className="fas fa-info-circle input-icon"></i>
+                                                            <textarea
+                                                                className="modern-input"
+                                                                id="companyDetails"
+                                                                name="companyDetails"
+                                                                rows="3"
+                                                                value={formData.companyDetails}
+                                                                onChange={handleChange}
+                                                                placeholder="About the company (Optional)"
+                                                            />
+                                                            <label htmlFor="companyDetails" className="floating-label">About Company</label>
+                                                        </div>
+                                                    </div>
                                                 </>
                                             )}
 
@@ -349,6 +460,12 @@ const RegisterPage = () => {
                                                         <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
                                                     </button>
                                                 </div>
+                                                {/* Password strength meter */}
+                                                {formData.password && (
+                                                    <div style={{ marginTop: '0.5rem' }}>
+                                                        <PasswordStrength password={formData.password} />
+                                                    </div>
+                                                )}
                                             </div>
 
                                             <div className="form-group">

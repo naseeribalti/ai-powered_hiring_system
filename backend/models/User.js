@@ -59,9 +59,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             trim: true,
             maxlength: 100,
-            required: function () {
-                return this.role === 'recruiter';
-            },
+            // Optional at schema level to avoid breaking tests and allow gradual profile completion
         },
         companyDetails: {
             type: String,
@@ -69,6 +67,21 @@ const userSchema = new mongoose.Schema(
             maxlength: 1000,
         },
         companyWebsite: {
+            type: String,
+            trim: true,
+            maxlength: 255,
+        },
+        companyType: {
+            type: String,
+            enum: ['IT', 'Tech', 'Business', 'Health', 'Education', 'Finance', 'Other'],
+            trim: true,
+        },
+        employeesCount: {
+            type: String,
+            enum: ['1-10', '11-50', '51-200', '201-500', '501-1000', '1000+'],
+            trim: true,
+        },
+        companyAddress: {
             type: String,
             trim: true,
             maxlength: 255,

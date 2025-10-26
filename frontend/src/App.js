@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { useAuth } from './context/AuthContext';
 
 // Import pages
 import LandingPage from './pages/Home/LandingPage';
+import EnhancedHome from './pages/Home/EnhancedHome';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import Privacy from './pages/Privacy/Privacy';
@@ -64,7 +66,7 @@ function AppContent() {
     return (
         <div className="App">
             <FaviconManager />
-            {user && <Navbar />}
+            <Navbar />
             <main className={user ? 'main-content' : 'main-content-full'}>
                 <ErrorBoundary>
                     <Routes>
@@ -72,6 +74,12 @@ function AppContent() {
                         <Route path="/" element={
                             <PublicRoute>
                                 <LandingPage />
+                            </PublicRoute>
+                        } />
+                        {/* Enhanced marketing homepage */}
+                        <Route path="/home-pro" element={
+                            <PublicRoute>
+                                <EnhancedHome />
                             </PublicRoute>
                         } />
                         {/* /home route removed to avoid duplicate marketing page; use / instead */}
@@ -201,7 +209,9 @@ function App() {
         <QueryClientProvider client={queryClient}>
             <Router future={routerFutureFlags}>
                 <AuthProvider>
-                    <AppContent />
+                    <ThemeProvider>
+                        <AppContent />
+                    </ThemeProvider>
                 </AuthProvider>
             </Router>
         </QueryClientProvider>

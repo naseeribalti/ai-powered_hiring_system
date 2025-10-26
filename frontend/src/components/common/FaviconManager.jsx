@@ -13,8 +13,16 @@ const ensureSvgFaviconLink = () => {
 
 const FaviconManager = () => {
     useEffect(() => {
+        const resolveDark = () => {
+            const attr = document.documentElement.getAttribute('data-theme');
+            if (attr === 'dark') return true;
+            if (attr === 'light') return false;
+            // system
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        };
+
         const updateFavicon = () => {
-            const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = resolveDark();
             const link = ensureSvgFaviconLink();
             if (link) {
                 link.href = isDark ? '/favicon-dark.svg' : '/favicon.svg';
@@ -33,12 +41,17 @@ const FaviconManager = () => {
             mql.addListener(updateFavicon);
         }
 
+        // React to theme attribute changes
+        const observer = new MutationObserver(() => updateFavicon());
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
         return () => {
             if (mql && mql.removeEventListener) {
                 mql.removeEventListener('change', updateFavicon);
             } else if (mql && mql.removeListener) {
                 mql.removeListener(updateFavicon);
             }
+            observer.disconnect();
         };
     }, []);
 

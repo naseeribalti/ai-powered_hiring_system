@@ -74,7 +74,7 @@ const approveRecruiter = async (req, res, next) => {
  */
 const rejectRecruiter = async (req, res, next) => {
     try {
-        const { reason } = req.body;
+        // const { reason } = req.body; // Reserved for future email notifications
 
         const recruiter = await User.findOne({
             _id: req.params.id,
@@ -120,7 +120,7 @@ const rejectRecruiter = async (req, res, next) => {
  */
 const suspendUser = async (req, res, next) => {
     try {
-        const { reason } = req.body;
+        // const { reason } = req.body; // Reserved for future email notifications
 
         const user = await User.findById(req.params.id);
 

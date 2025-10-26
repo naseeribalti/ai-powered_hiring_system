@@ -49,9 +49,11 @@ const requireActiveRecruiter = (req, res, next) => {
     next();
 };
 
+const Job = require('../models/Job');
+
 /**
  * Check if user can manage a specific job
- * Verifies job ownership for recruiters
+ * Verifies job ownership for recruiters by checking the Job document directly
  */
 const canManageJob = async (req, res, next) => {
     if (!req.user) {
@@ -70,20 +72,32 @@ const canManageJob = async (req, res, next) => {
         });
     }
 
-    // Admin can manage any job
-    if (req.user.role === 'admin') {
-        return next();
-    }
+    try {
+        // Admin can manage any job
+        if (req.user.role === 'admin') {
+            return next();
+        }
 
-    // Check if recruiter owns this job
-    if (!req.user.canManageJob(jobId)) {
+        // Load job and verify ownership
+        const job = await Job.findById(jobId).select('postedBy');
+        if (!job) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Job not found'
+            });
+        }
+
+        if (job.postedBy && job.postedBy.toString() === req.user._id.toString()) {
+            return next();
+        }
+
         return res.status(403).json({
             status: 'error',
             message: 'You do not have permission to manage this job'
         });
+    } catch (err) {
+        return next(err);
     }
-
-    next();
 };
 
 /**

@@ -4,10 +4,10 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
-const app = require('../app');
-const { connectDB, disconnectDB } = require('../utils/db');
-const User = require('../models/User');
-const Job = require('../models/Job');
+const app = require('../../app');
+const { connectDB, disconnectDB } = require('../../utils/db');
+const User = require('../../models/User');
+const Job = require('../../models/Job');
 
 jest.setTimeout(30000);
 

@@ -1,6 +1,8 @@
 /* Import variables and global styles */
 @import './variables.css';
 @import './global.css';
+@import './themes/light.css';
+@import './themes/dark.css';
 
 /* Root element styles */
 html,

@@ -42,6 +42,19 @@ const registerValidation = [
         .trim()
         .isLength({ max: 1000 })
         .withMessage('Company details must not exceed 1000 characters'),
+    body('companyType')
+        .optional()
+        .isIn(['IT', 'Tech', 'Business', 'Health', 'Education', 'Finance', 'Other'])
+        .withMessage('Invalid company type'),
+    body('employeesCount')
+        .optional()
+        .isIn(['1-10', '11-50', '51-200', '201-500', '501-1000', '1000+'])
+        .withMessage('Invalid employees count'),
+    body('companyAddress')
+        .optional()
+        .trim()
+        .isLength({ max: 255 })
+        .withMessage('Company address must not exceed 255 characters'),
 ];
 
 const loginValidation = [
