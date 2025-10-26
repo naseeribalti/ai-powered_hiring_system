@@ -7,7 +7,6 @@ import { useAuth } from './context/AuthContext';
 
 // Import pages
 import LandingPage from './pages/Home/LandingPage';
-import Home from './pages/Home/Home';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import Privacy from './pages/Privacy/Privacy';
@@ -75,11 +74,7 @@ function AppContent() {
                                 <LandingPage />
                             </PublicRoute>
                         } />
-                        <Route path="/home" element={
-                            <PublicRoute>
-                                <Home />
-                            </PublicRoute>
-                        } />
+                        {/* /home route removed to avoid duplicate marketing page; use / instead */}
                         <Route path="/about" element={
                             <PublicRoute>
                                 <About />
