@@ -19,6 +19,10 @@ jobs:
       - name: Install Node dependencies (npm ci)
         run: npm ci
 
+      - name: Show resolved versions
+        run: |
+          npm ls cloudinary multer-storage-cloudinary || true
+
       - name: Run ESLint
         run: npm run lint
 
