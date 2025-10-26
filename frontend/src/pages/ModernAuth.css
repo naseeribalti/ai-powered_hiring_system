@@ -45,6 +45,33 @@
   --transition-slow: 0.5s ease-in-out;
 }
 
+/* Dark mode overrides for auth pages */
+:root[data-theme='dark'] {
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-light: #94a3b8;
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-glass: rgba(15, 23, 42, 0.5);
+  --border-color: #334155;
+}
+
+:root[data-theme='system'] {
+  /* System theme inherits from OS preference */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] {
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-light: #94a3b8;
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-glass: rgba(15, 23, 42, 0.5);
+    --border-color: #334155;
+  }
+}
+
 /* Reset and base styles */
 * {
   margin: 0;

@@ -104,7 +104,7 @@ const LoginPage = () => {
                                                 value={formData.email}
                                                 onChange={handleChange}
                                                 required
-                                                placeholder="Enter your email"
+                                                placeholder=" "
                                             />
                                             <label htmlFor="email" className="floating-label">Email Address</label>
                                         </div>
@@ -121,7 +121,7 @@ const LoginPage = () => {
                                                 value={formData.password}
                                                 onChange={handleChange}
                                                 required
-                                                placeholder="Enter your password"
+                                                placeholder=" "
                                             />
                                             <label htmlFor="password" className="floating-label">Password</label>
                                             <button

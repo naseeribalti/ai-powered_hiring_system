@@ -45,22 +45,22 @@ const LandingPage = () => {
         {
             icon: <FaRocket />,
             title: 'AI-Powered Matching',
-            description: 'Our intelligent algorithm matches you with the perfect job opportunities based on your skills and experience.'
+            description: 'Smart algorithms connect you with perfect opportunities instantly.'
         },
         {
             icon: <FaChartLine />,
             title: 'Career Analytics',
-            description: 'Get insights into your career growth with detailed analytics and personalized recommendations.'
+            description: 'Track progress with real-time insights and data-driven recommendations.'
         },
         {
             icon: <FaShieldAlt />,
             title: 'Verified Companies',
-            description: 'Apply with confidence to verified companies and trusted recruiters in our network.'
+            description: 'Apply confidently to pre-screened and verified employers only.'
         },
         {
             icon: <FaUsers />,
             title: 'Expert Support',
-            description: 'Get professional guidance from our career experts throughout your job search journey.'
+            description: 'Get personalized guidance from dedicated career advisors 24/7.'
         }
     ];
 
