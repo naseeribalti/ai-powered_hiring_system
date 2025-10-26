@@ -3,6 +3,7 @@
 @import './global.css';
 @import './themes/light.css';
 @import './themes/dark.css';
+@import './micro-interactions.css';
 
 /* Root element styles */
 html,
