@@ -14,6 +14,7 @@ const userRoutes = require('./routes/users');
 const searchRoutes = require('./routes/search');
 const billingRoutes = require('./routes/billing');
 const supportRoutes = require('./routes/support');
+const chatbotRoutes = require('./routes/chatbot');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -87,6 +88,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/billing', billingRoutes);
 app.use('/api/support', supportRoutes);
+app.use('/api/chatbot', chatbotRoutes); // AI-powered career chatbot
 
 // Global error handler
 app.use(errorHandler);
