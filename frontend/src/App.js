@@ -15,6 +15,8 @@ import Privacy from './pages/Privacy/Privacy';
 import Terms from './pages/Terms/Terms';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import DashboardPage from './pages/DashboardPage';
 import JobsPage from './pages/JobsPage';
 import JobDetailPage from './pages/JobDetailPage';
@@ -111,6 +113,16 @@ function AppContent() {
                         <Route path="/register" element={
                             <PublicRoute>
                                 <RegisterPage />
+                            </PublicRoute>
+                        } />
+                        <Route path="/forgot-password" element={
+                            <PublicRoute>
+                                <ForgotPassword />
+                            </PublicRoute>
+                        } />
+                        <Route path="/reset-password/:token" element={
+                            <PublicRoute>
+                                <ResetPassword />
                             </PublicRoute>
                         } />
 

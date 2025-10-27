@@ -2,31 +2,28 @@ import React from 'react';
 import { useTheme } from '../../context/ThemeContext';
 
 const ThemeToggle = () => {
-    const { theme, setTheme, resolvedTheme } = useTheme();
+    const { setTheme, resolvedTheme } = useTheme();
 
-    const options = [
-        { key: 'light', label: 'Light', icon: 'fas fa-sun' },
-        { key: 'dark', label: 'Dark', icon: 'fas fa-moon' },
-        { key: 'system', label: 'System', icon: 'fas fa-desktop' },
-    ];
+    // Toggle between light and dark only
+    const toggleTheme = () => {
+        const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+    };
+
+    // Show sun icon in dark mode (click to go light), moon in light mode (click to go dark)
+    const icon = resolvedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    const label = resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
 
     return (
-        <div className="nav-theme-toggle" role="group" aria-label="Theme selector">
-            {options.map(opt => (
-                <button
-                    key={opt.key}
-                    type="button"
-                    className={`theme-btn ${theme === opt.key ? 'active' : ''}`}
-                    title={`${opt.label} theme`}
-                    onClick={() => setTheme(opt.key)}
-                    aria-pressed={theme === opt.key}
-                    aria-label={opt.label}
-                >
-                    <i className={opt.icon}></i>
-                </button>
-            ))}
-            <span className="visually-hidden">Current theme: {resolvedTheme}</span>
-        </div>
+        <button
+            type="button"
+            className="theme-toggle-btn"
+            title={label}
+            onClick={toggleTheme}
+            aria-label={label}
+        >
+            <i className={icon}></i>
+        </button>
     );
 };
 

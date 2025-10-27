@@ -1,53 +1,63 @@
 :root {
-  /* HSL-based design system (shadcn/ui compatible) */
-  --background: 0 0% 100%;
-  --foreground: 222 47% 11%;
+  /* Professional Color System - LinkedIn/Indeed/Glassdoor Inspired */
+  --background: 0 0% 98%;
+  --foreground: 210 16% 25%;
 
   --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
+  --card-foreground: 210 16% 25%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 222 47% 11%;
+  --popover-foreground: 210 16% 25%;
 
-  --primary: 221 83% 53%;
+  /* Primary: Modern Indigo (Template style) */
+  --primary: 244 71% 59%;
   --primary-foreground: 0 0% 100%;
+  --primary-hover: 244 71% 54%;
 
-  --secondary: 210 40% 96%;
-  --secondary-foreground: 222 47% 11%;
+  /* Secondary: Neutral Gray */
+  --secondary: 210 12% 95%;
+  --secondary-foreground: 210 16% 25%;
 
-  --muted: 210 40% 96%;
-  --muted-foreground: 215 16% 47%;
+  /* Muted: Light backgrounds */
+  --muted: 210 12% 96%;
+  --muted-foreground: 210 12% 45%;
 
-  --accent: 199 89% 48%;
+  /* Accent: Success Green (Indeed style) */
+  --accent: 149 60% 45%;
   --accent-foreground: 0 0% 100%;
 
-  --destructive: 0 84% 60%;
+  /* Destructive: Warning Red */
+  --destructive: 4 90% 58%;
   --destructive-foreground: 0 0% 100%;
 
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 221 83% 53%;
+  /* Borders and Inputs */
+  --border: 210 14% 89%;
+  --input: 210 14% 89%;
+  --ring: 244 71% 59%;
 
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 
-  /* Modern gradients using HSL */
+  /* Professional Gradients */
   --gradient-hero: linear-gradient(
     135deg,
-    hsl(221 83% 53%) 0%,
-    hsl(250 70% 60%) 50%,
-    hsl(199 89% 48%) 100%
+    hsl(244 71% 59%) 0%,
+    hsl(276 62% 60%) 100%
   );
   --gradient-card: linear-gradient(
     180deg,
-    hsl(0 0% 100% / 0.05) 0%,
-    hsl(0 0% 100% / 0.02) 100%
+    hsl(0 0% 100%) 0%,
+    hsl(210 12% 98%) 100%
   );
-  --shadow-glow: 0 0 40px hsl(221 83% 53% / 0.15);
-  --shadow-card: 0 4px 6px -1px hsl(0 0% 0% / 0.1),
-    0 2px 4px -1px hsl(0 0% 0% / 0.06);
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-glow: 0 0 30px hsl(244 71% 59% / 0.1);
+  --shadow-card: 0 5px 15px rgba(0, 0, 0, 0.05);
+  --transition-smooth: all 0.2s ease-in-out;
 
-  /* Legacy support - map to HSL tokens */
+  /* Chatbot specific variables */
+  --chatbot-bg: 0 0% 97%;
+  --user-msg: 244 71% 59%;
+  --ai-msg: 220 13% 95%;
+
+  /* Legacy support */
   --color-primary: hsl(var(--primary));
   --color-accent: hsl(var(--accent));
   --color-bg: hsl(var(--background));
@@ -56,20 +66,20 @@
   --color-text: hsl(var(--foreground));
   --color-text-secondary: hsl(var(--muted-foreground));
 
-  /* Shadows & radii - Professional Depth */
+  /* Shadows - Professional Depth */
   --radius-xs: 4px;
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 18px;
-  --radius-2xl: 24px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
   --radius-full: 9999px;
 
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
 
   /* Spacing scale */
   --space-1: 4px;
@@ -83,10 +93,9 @@
   --space-12: 48px;
   --space-16: 64px;
 
-  /* Typography - Enhanced Readability */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
-    Cantarell, Noto Sans, Helvetica Neue, Arial, 'Apple Color Emoji',
-    'Segoe UI Emoji';
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas,
     'Courier New', monospace;
 
@@ -104,56 +113,104 @@
   --font-semibold: 600;
   --font-bold: 700;
 
-  /* Transitions - Smooth Micro-interactions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+  --transition-bounce: 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Status Colors - Professional Palette */
+  --success: 149 60% 45%;
+  --success-light: 149 60% 95%;
+  --warning: 38 92% 50%;
+  --warning-light: 38 92% 95%;
+  --error: 4 90% 58%;
+  --error-light: 4 90% 95%;
+  --info: 244 71% 59%;
+  --info-light: 244 71% 95%;
 }
 
-/* Dark theme with HSL */
-.dark,
-[data-theme='dark'] {
-  --background: 222 47% 11%;
-  --foreground: 210 40% 98%;
+/* Dark Theme - Professional Dark Mode */
+[data-theme='dark'],
+.dark {
+  /* Dark backgrounds with proper contrast */
+  --background: 220 15% 12%;
+  --foreground: 210 20% 95%;
 
-  --card: 217 33% 17%;
-  --card-foreground: 210 40% 98%;
+  --card: 220 15% 16%;
+  --card-foreground: 210 20% 95%;
 
-  --popover: 222 47% 11%;
-  --popover-foreground: 210 40% 98%;
+  --popover: 220 15% 16%;
+  --popover-foreground: 210 20% 95%;
 
-  --primary: 221 83% 53%;
-  --primary-foreground: 0 0% 100%;
+  /* Primary: Lighter indigo for dark mode */
+  --primary: 244 71% 65%;
+  --primary-foreground: 210 20% 98%;
+  --primary-hover: 244 71% 70%;
 
-  --secondary: 217 33% 17%;
-  --secondary-foreground: 210 40% 98%;
+  /* Secondary: Dark gray */
+  --secondary: 220 15% 20%;
+  --secondary-foreground: 210 20% 95%;
 
-  --muted: 217 33% 17%;
-  --muted-foreground: 215 20% 65%;
+  /* Muted: Subtle dark backgrounds */
+  --muted: 220 15% 18%;
+  --muted-foreground: 210 15% 65%;
 
-  --accent: 199 89% 48%;
-  --accent-foreground: 0 0% 100%;
+  /* Accent: Brighter green for visibility */
+  --accent: 149 60% 50%;
+  --accent-foreground: 210 20% 98%;
 
-  --destructive: 0 63% 31%;
-  --destructive-foreground: 210 40% 98%;
+  /* Destructive: Brighter red */
+  --destructive: 4 90% 65%;
+  --destructive-foreground: 210 20% 98%;
 
-  --border: 217 33% 17%;
-  --input: 217 33% 17%;
-  --ring: 221 83% 53%;
+  /* Borders and Inputs */
+  --border: 220 15% 25%;
+  --input: 220 15% 25%;
+  --ring: 244 71% 65%;
 
+  /* Dark mode gradients */
   --gradient-hero: linear-gradient(
     135deg,
-    hsl(221 83% 53%) 0%,
-    hsl(250 70% 60%) 50%,
-    hsl(199 89% 48%) 100%
+    hsl(244 71% 55%) 0%,
+    hsl(276 62% 60%) 100%
   );
   --gradient-card: linear-gradient(
     180deg,
-    hsl(0 0% 100% / 0.05) 0%,
-    hsl(0 0% 100% / 0.02) 100%
+    hsl(220 15% 18%) 0%,
+    hsl(220 15% 16%) 100%
   );
-  --shadow-glow: 0 0 40px hsl(221 83% 53% / 0.3);
-  --shadow-card: 0 4px 6px -1px hsl(0 0% 0% / 0.3),
-    0 2px 4px -1px hsl(0 0% 0% / 0.2);
+  --shadow-glow: 0 0 30px hsl(244 71% 65% / 0.2);
+  --shadow-card: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+  /* Chatbot dark mode */
+  --chatbot-bg: 220 15% 18%;
+  --user-msg: 244 71% 65%;
+  --ai-msg: 220 15% 22%;
+
+  /* Legacy support for dark mode */
+  --color-primary: hsl(var(--primary));
+  --color-accent: hsl(var(--accent));
+  --color-bg: hsl(var(--background));
+  --color-surface: hsl(var(--card));
+  --color-border: hsl(var(--border));
+  --color-text: hsl(var(--foreground));
+  --color-text-secondary: hsl(var(--muted-foreground));
+
+  /* Enhanced shadows for dark mode */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.7), 0 4px 6px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.8), 0 10px 10px rgba(0, 0, 0, 0.7);
+
+  /* Status colors for dark mode */
+  --success: 149 60% 50%;
+  --success-light: 149 60% 20%;
+  --warning: 38 92% 60%;
+  --warning-light: 38 92% 20%;
+  --error: 4 90% 65%;
+  --error-light: 4 90% 20%;
+  --info: 244 71% 65%;
+  --info-light: 244 71% 20%;
 }

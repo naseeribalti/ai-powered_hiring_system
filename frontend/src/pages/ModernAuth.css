@@ -14,9 +14,9 @@
   --error-color: #ef4444;
   --warning-color: #f59e0b;
 
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --text-light: #94a3b8;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-light: #64748b;
   --text-white: #ffffff;
 
   --bg-primary: #ffffff;
@@ -54,10 +54,6 @@
   --bg-secondary: #1e293b;
   --bg-glass: rgba(15, 23, 42, 0.5);
   --border-color: #334155;
-}
-
-:root[data-theme='system'] {
-  /* System theme inherits from OS preference */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -395,7 +391,7 @@ body {
 }
 
 .mobile-brand h3 {
-  color: var(--text-primary);
+  color: #0f172a;
   font-weight: 600;
   font-size: 1.25rem;
 }
@@ -409,13 +405,14 @@ body {
 .form-title {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #0f172a;
   margin-bottom: 0.5rem;
 }
 
 .form-subtitle {
-  color: var(--text-secondary);
+  color: #475569;
   font-size: 1rem;
+  font-weight: 500;
   margin-bottom: 1.5rem;
 }
 
@@ -446,7 +443,7 @@ body {
   height: 32px;
   border-radius: 50%;
   background: var(--secondary-color);
-  color: var(--text-secondary);
+  color: #475569;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -463,11 +460,12 @@ body {
 .step span {
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: #475569;
 }
 
 .step.active span {
-  color: var(--text-primary);
+  color: #0f172a;
+  font-weight: 600;
 }
 
 .step-line {
@@ -539,9 +537,9 @@ body {
   position: absolute;
   left: 3rem;
   top: 1rem;
-  color: var(--text-secondary);
+  color: #475569;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
   pointer-events: none;
   transition: var(--transition-normal);
   transform-origin: left top;
@@ -552,7 +550,7 @@ body {
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-secondary);
+  color: #475569;
   font-size: 1.1rem;
   z-index: 1;
 }
@@ -564,7 +562,7 @@ body {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: #475569;
   cursor: pointer;
   padding: 0.25rem;
   border-radius: var(--radius-sm);
@@ -572,7 +570,7 @@ body {
 }
 
 .password-toggle:hover {
-  color: var(--text-primary);
+  color: #0f172a;
   background: var(--secondary-color);
 }
 
@@ -584,9 +582,10 @@ body {
 .role-label {
   display: block;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #0f172a;
   margin-bottom: 1rem;
   text-align: center;
+  font-size: 1rem;
 }
 
 .role-options {
@@ -645,13 +644,14 @@ body {
 .role-card h4 {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #0f172a;
   margin-bottom: 0.25rem;
 }
 
 .role-card p {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: #475569;
+  font-weight: 500;
 }
 
 /* Form options */
@@ -668,7 +668,8 @@ body {
   gap: 0.5rem;
   cursor: pointer;
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: #475569;
+  font-weight: 500;
 }
 
 .custom-checkbox input {
@@ -757,8 +758,9 @@ body {
 
 .secondary-btn {
   background: var(--secondary-color);
-  color: var(--text-primary);
+  color: #0f172a;
   border: 1px solid var(--border-color);
+  font-weight: 600;
 }
 
 .secondary-btn:hover:not(:disabled) {
@@ -818,9 +820,10 @@ body {
 
 .divider span {
   background: var(--bg-primary);
-  color: var(--text-secondary);
+  color: #475569;
   padding: 0 1rem;
   font-size: 0.875rem;
+  font-weight: 500;
   position: relative;
   z-index: 1;
 }
@@ -842,7 +845,7 @@ body {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   background: var(--bg-primary);
-  color: var(--text-primary);
+  color: #0f172a;
   font-weight: 500;
   cursor: pointer;
   transition: var(--transition-normal);
@@ -871,8 +874,9 @@ body {
 }
 
 .auth-switch p {
-  color: var(--text-secondary);
+  color: #475569;
   font-size: 0.875rem;
+  font-weight: 500;
   margin-bottom: 0.5rem;
 }
 

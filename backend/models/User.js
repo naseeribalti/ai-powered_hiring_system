@@ -129,6 +129,16 @@ const userSchema = new mongoose.Schema(
             default: false,
         },
 
+        // === Password Reset ===
+        resetPasswordToken: {
+            type: String,
+            select: false,
+        },
+        resetPasswordExpires: {
+            type: Date,
+            select: false,
+        },
+
         // === Legacy Field for Compatibility ===
         isActive: {
             type: Boolean,

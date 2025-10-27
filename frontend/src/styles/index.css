@@ -251,28 +251,62 @@ h6 {
 }
 
 /* Theme toggle (pill + circle buttons) */
-.nav-theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 4px;
-}
-.nav-theme-toggle .theme-btn {
-  width: 32px;
-  height: 32px;
+/* Theme Toggle - Single Button */
+.theme-toggle-btn {
+  width: 50px;
+  height: 50px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: var(--color-text);
+  background: hsl(var(--secondary));
+  border: none;
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.1) rotate(15deg);
+  background: hsl(var(--primary));
+  color: white;
+  box-shadow: 0 4px 12px hsl(var(--primary) / 0.3);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+/* Legacy support - keep for backward compatibility */
+.nav-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-theme-toggle .theme-btn {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: hsl(var(--secondary));
+  border: none;
+  color: hsl(var(--foreground));
+  cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 1rem;
+}
+.nav-theme-toggle .theme-btn:hover {
+  transform: scale(1.1);
+  background: hsl(var(--secondary-foreground) / 0.1);
 }
 .nav-theme-toggle .theme-btn.active {
-  background: var(--color-primary);
-  color: #fff;
+  background: hsl(var(--primary));
+  color: white;
+  box-shadow: 0 2px 8px hsl(var(--primary) / 0.3);
 }
 
 /* Auth buttons */

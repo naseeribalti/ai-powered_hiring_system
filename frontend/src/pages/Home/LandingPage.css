@@ -405,14 +405,16 @@
   background: hsl(var(--card));
   padding: 2.5rem;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   transition: var(--transition-smooth);
   border: 1px solid hsl(var(--border));
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
 }
 
 .feature-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   border-color: hsl(var(--primary) / 0.3);
 }
 
@@ -1170,4 +1172,232 @@
       background: var(--color-bg);
     }
   }
+}
+
+/* Dark Mode Specific Overrides for Text Visibility */
+[data-theme='dark'] .hero-text,
+.dark .hero-text {
+  color: hsl(var(--foreground)) !important;
+}
+
+[data-theme='dark'] .hero-title,
+.dark .hero-title {
+  color: hsl(var(--foreground)) !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+}
+
+[data-theme='dark'] .hero-subtitle,
+.dark .hero-subtitle {
+  color: hsl(var(--muted-foreground)) !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+}
+
+[data-theme='dark'] .section-title,
+.dark .section-title {
+  color: hsl(var(--foreground)) !important;
+}
+
+[data-theme='dark'] .section-description,
+.dark .section-description {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+[data-theme='dark'] .feature-title,
+.dark .feature-title {
+  color: hsl(var(--foreground)) !important;
+}
+
+[data-theme='dark'] .feature-description,
+.dark .feature-description {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+[data-theme='dark'] .cta-title,
+.dark .cta-title {
+  color: hsl(var(--foreground)) !important;
+}
+
+[data-theme='dark'] .cta-description,
+.dark .cta-description {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+[data-theme='dark'] .testimonial-text,
+.dark .testimonial-text {
+  color: hsl(var(--foreground)) !important;
+}
+
+[data-theme='dark'] .testimonial-author,
+.dark .testimonial-author {
+  color: hsl(var(--foreground)) !important;
+}
+
+[data-theme='dark'] .testimonial-role,
+.dark .testimonial-role {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+[data-theme='dark'] .step-number,
+.dark .step-number {
+  color: hsl(var(--primary)) !important;
+  background: hsl(var(--muted)) !important;
+}
+
+[data-theme='dark'] .step-title,
+.dark .step-title {
+  color: hsl(var(--foreground)) !important;
+}
+
+[data-theme='dark'] .step-description,
+.dark .step-description {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+[data-theme='dark'] .stat-number,
+.dark .stat-number {
+  color: hsl(var(--primary)) !important;
+}
+
+[data-theme='dark'] .stat-label,
+.dark .stat-label {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Dark mode for cards and backgrounds */
+[data-theme='dark'] .feature-card,
+.dark .feature-card {
+  background: hsl(var(--card)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+[data-theme='dark'] .testimonial-card,
+.dark .testimonial-card {
+  background: hsl(var(--card)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+[data-theme='dark'] .step-card,
+.dark .step-card {
+  background: hsl(var(--card)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+[data-theme='dark'] .features-section,
+.dark .features-section,
+[data-theme='dark'] .testimonials-section,
+.dark .testimonials-section,
+[data-theme='dark'] .how-it-works-section,
+.dark .how-it-works-section,
+[data-theme='dark'] .stats-section,
+.dark .stats-section {
+  background: hsl(var(--background)) !important;
+}
+
+[data-theme='dark'] .cta-section,
+.dark .cta-section {
+  background: hsl(var(--card)) !important;
+}
+
+/* Hero search box in dark mode */
+[data-theme='dark'] .hero-search,
+.dark .hero-search {
+  background: hsl(var(--card)) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+
+[data-theme='dark'] .search-input,
+.dark .search-input,
+[data-theme='dark'] .search-select,
+.dark .search-select {
+  background: hsl(var(--muted)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+[data-theme='dark'] .search-input::placeholder,
+.dark .search-input::placeholder {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Buttons in dark mode */
+[data-theme='dark'] .btn-primary,
+.dark .btn-primary {
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+}
+
+[data-theme='dark'] .btn-primary:hover,
+.dark .btn-primary:hover {
+  background: hsl(var(--primary-hover)) !important;
+}
+
+[data-theme='dark'] .btn-secondary,
+.dark .btn-secondary {
+  background: hsl(var(--secondary)) !important;
+  color: hsl(var(--secondary-foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Animation Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
+/* Animation delays for staggered appearance */
+.feature-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.feature-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.feature-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.feature-card:nth-child(4) {
+  animation-delay: 0.4s;
 }

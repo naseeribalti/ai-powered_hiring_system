@@ -1,43 +1,44 @@
-/* AIChatbot.css - AI Chatbot Styling */
+/* AIChatbot.css - Professional AI Chatbot Styling */
 
 /* Chat Toggle Button */
 .chat-toggle {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  width: 56px;
+  height: 56px;
+  background: hsl(var(--primary));
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px hsl(var(--primary) / 0.3);
+  transition: all 0.2s ease-in-out;
   z-index: 1000;
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .chat-toggle:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+  transform: scale(1.05);
+  background: hsl(var(--primary-hover));
+  box-shadow: 0 6px 16px hsl(var(--primary) / 0.4);
 }
 
 .chat-toggle.open {
-  background: #e74c3c;
+  background: hsl(4 90% 58%);
 }
 
 .chat-badge {
   position: absolute;
-  top: -5px;
-  right: -5px;
-  background: #27ae60;
+  top: -4px;
+  right: -4px;
+  background: hsl(149 60% 45%);
   color: white;
-  font-size: 0.7rem;
-  padding: 2px 6px;
-  border-radius: 10px;
+  font-size: 0.65rem;
+  padding: 2px 5px;
+  border-radius: 8px;
   font-weight: 600;
 }
 
@@ -46,12 +47,12 @@
   position: fixed;
   bottom: 90px;
   right: 20px;
-  width: 360px;
-  height: 480px;
-  max-height: calc(100vh - 120px);
+  width: 320px;
+  height: 420px;
+  max-height: calc(100vh - 140px);
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   transform: translateY(100%) scale(0.8);
@@ -70,9 +71,9 @@
 
 /* Chat Header */
 .chat-header {
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: hsl(var(--primary));
   color: white;
-  padding: 1rem;
+  padding: 0.875rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -145,7 +146,7 @@
 .message-avatar {
   width: 32px;
   height: 32px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: hsl(var(--primary));
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -162,7 +163,7 @@
 }
 
 .message-text {
-  background: #f8f9fa;
+  background: hsl(var(--chatbot-bg));
   padding: 0.75rem 1rem;
   border-radius: 18px;
   line-height: 1.4;
@@ -170,7 +171,7 @@
 }
 
 .message.user .message-text {
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: hsl(var(--user-msg));
   color: white;
 }
 
@@ -243,19 +244,22 @@
 }
 
 .quick-action-btn {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  background: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+  border: 1px solid hsl(var(--primary) / 0.2);
   padding: 0.5rem 0.75rem;
-  border-radius: 15px;
+  border-radius: 20px;
   font-size: 0.8rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
 }
 
 .quick-action-btn:hover {
-  background: rgba(102, 126, 234, 0.2);
+  background: hsl(var(--primary) / 0.15);
+  border-color: hsl(var(--primary));
   transform: translateY(-1px);
+  box-shadow: 0 2px 8px hsl(var(--primary) / 0.2);
 }
 
 /* Chat Input */
@@ -286,14 +290,14 @@
 }
 
 .input-container textarea:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 2px hsl(var(--primary) / 0.1);
 }
 
 .send-button {
   width: 40px;
   height: 40px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: hsl(var(--primary));
   color: white;
   border: none;
   border-radius: 50%;
@@ -301,13 +305,14 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease-in-out;
   flex-shrink: 0;
 }
 
 .send-button:hover:not(:disabled) {
-  transform: scale(1.1);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transform: scale(1.05);
+  background: hsl(var(--primary-hover));
+  box-shadow: 0 4px 12px hsl(var(--primary) / 0.3);
 }
 
 .send-button:disabled {
@@ -325,12 +330,12 @@
 }
 
 .chat-messages::-webkit-scrollbar-thumb {
-  background: rgba(102, 126, 234, 0.3);
+  background: hsl(var(--primary) / 0.3);
   border-radius: 2px;
 }
 
 .chat-messages::-webkit-scrollbar-thumb:hover {
-  background: rgba(102, 126, 234, 0.5);
+  background: hsl(var(--primary) / 0.5);
 }
 
 /* Mobile Responsiveness */

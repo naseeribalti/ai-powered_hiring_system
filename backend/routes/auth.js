@@ -62,8 +62,26 @@ const loginValidation = [
     body('password').isLength({ min: 8 }).withMessage('Password must be provided'),
 ];
 
+const forgotPasswordValidation = [
+    body('email').isEmail().withMessage('Valid email is required').normalizeEmail(),
+];
+
+const resetPasswordValidation = [
+    body('password')
+        .isLength({ min: 8 })
+        .withMessage('Password must be at least 8 characters long')
+        .bail()
+        .custom((value) => authConfig.validatePassword(value))
+        .withMessage(() => {
+            const rules = authConfig.getPasswordRequirements();
+            return `Password must include: ${rules.join(', ')}`;
+        }),
+];
+
 router.post('/register', registerValidation, validate, authController.register);
 router.post('/login', loginValidation, validate, authController.login);
 router.get('/me', authMiddleware, authController.getProfile);
+router.post('/forgot-password', forgotPasswordValidation, validate, authController.forgotPassword);
+router.post('/reset-password/:token', resetPasswordValidation, validate, authController.resetPassword);
 
 module.exports = router;
