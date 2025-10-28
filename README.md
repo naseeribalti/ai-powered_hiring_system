@@ -354,6 +354,8 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 ## 👥 Team
 
 - **Developer:** Naseer Ibalti
+- **Developer:** Muhammad Usama
+- **Developer:** Syed Qamar Abbas
 - **Repository:** [github.com/naseeribalti/ai-powered_hiring_system](https://github.com/naseeribalti/ai-powered_hiring_system)
 
 ---
